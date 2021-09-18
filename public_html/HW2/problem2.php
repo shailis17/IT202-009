@@ -12,7 +12,8 @@ function getTotal($arr) {
         $total += $arr[$x];
     }
     //TODO do rounding stuff here
-    //$total = round($total, 2);
+    //$total = round($total, 2); ==> prints out 0.1 not 0.10
+    $total = number_format($total, 2);
     echo "The total is " . var_export($total, true);
 }
 echo "Problem 2: Adding Floats<br>";
