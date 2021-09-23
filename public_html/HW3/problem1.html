@@ -20,6 +20,35 @@
     </script>
     <style>
         /* TODO: make edits here */
+
+        /*1-3) Make the navigation horizontal, 
+               Get rid of the navigation list item markers, 
+               Give the navigation a background */
+        
+        nav li{display: inline-block;}
+        
+        nav li a{
+            background-color: mistyrose;
+            text-align: center;
+            padding: 14px 16px;
+        }
+
+        /* 4) Make the links (or their surrounding area) change color on mouseover */
+        nav li a:hover {background-color: rosybrown}
+
+        /* 5) Change the "bullet points" of this entire list to checkmarks (✓)*/
+        li {
+            list-style: "✓ ";
+        }
+
+        /* 6)  Use CSS to uppercase the first character of the content in the <h1> tag and the <a> tags */
+        h1, a 
+        {
+            text-transform: capitalize;
+        }
+
+        /* 7) dd some styling of your choice (that doesn't conflict with any requests in this assignment), mention it in the HW submission as a comment in the Pull Request*/
+        body{background-color: floralwhite;}
     </style>
     <!-- make the necessary edits above this line -->
 
