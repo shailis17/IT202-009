@@ -8,7 +8,7 @@
         window.addEventListener("load", () => {
             console.log("loaded via javascript");
             //TODO: add any extra onload processing you may need here
-            //console.log(getCurrentSelection());
+            window.addEventListener("hashchange", getCurrentSelection)
 
         });
         function getCurrentSelection() {
@@ -16,8 +16,9 @@
                 //added this delay here as some solutions may require it to update properly (i.e., click code may complete before the navigation changes)
                 //TODO: add code for processing the current selection 
                 var link = location.hash;
-                check();
-                updateCurrentPage(link.substr(1));
+
+                if(link)
+                    updateCurrentPage(link.substr(1));
 
                                 
                 //Note: likely you'll want to call updateCurrentPage towards the end
