@@ -8,12 +8,18 @@
         window.addEventListener("load", () => {
             console.log("loaded via javascript");
             //TODO: add any extra onload processing you may need here
+            //console.log(getCurrentSelection());
+
         });
         function getCurrentSelection() {
             setTimeout(() => {
                 //added this delay here as some solutions may require it to update properly (i.e., click code may complete before the navigation changes)
                 //TODO: add code for processing the current selection 
+                var link = location.hash;
+                check();
+                updateCurrentPage(link.substr(1));
 
+                                
                 //Note: likely you'll want to call updateCurrentPage towards the end
             }, 100);
         }
@@ -47,7 +53,7 @@
             text-transform: capitalize;
         }
 
-        /* 7) dd some styling of your choice (that doesn't conflict with any requests in this assignment), mention it in the HW submission as a comment in the Pull Request*/
+        /* 7) add some styling of your choice (that doesn't conflict with any requests in this assignment), mention it in the HW submission as a comment in the Pull Request*/
         body{background-color: floralwhite;}
     </style>
     <!-- make the necessary edits above this line -->
