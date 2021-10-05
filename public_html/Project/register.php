@@ -38,7 +38,8 @@ require(__DIR__ . "/../../partials/nav.php");
     if(empty($email))
        array_push($errors, "Email must be set");
     //sanitize
-    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    //$email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $email = sanitize_email($email);
     //validate
     if(!filter_var($email, FILTER_VALIDATE_EMAIL))
         array_push($errors, "Invalid email address");
