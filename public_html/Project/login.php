@@ -27,30 +27,39 @@ require(__DIR__."/../../partials/nav.php");?>
      //same as above but for password
      $password = se($_POST, "password", "", false);
      //TODO 3: validate/use
-     $errors = [];
+     //$errors = [];
+     $hasErrors = false;
      if(empty($email)){
-        array_push($errors, "Email must be set");
+        //array_push($errors, "Email must be set");
+        flash("Email must be set");
+        $hasErrors = true;
      }
      //sanitize
      $email = filter_var($email, FILTER_SANITIZE_EMAIL);
      //validate
      if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-        array_push($errors, "Invalid email address");
+        //array_push($errors, "Invalid email address");
+        flash("Invalid email address");
+        $hasErrors = true;
      }
      if(empty($password)){
-         array_push($errors, "Password must be set");
+         //array_push($errors, "Password must be set");
+         flash("Password must be set");
+         $hasErrors = true;
      }
      if(strlen($password) < 8){
-         array_push($errors, "Password must be 8 or more characters");
+         //array_push($errors, "Password must be 8 or more characters");
+         flash("Password must be 8 or more characters");
+         $hasErrors = true;
      }
-     if(count($errors) > 0){
-         echo "<pre>" . var_export($errors, true) . "</pre>";
-     }
+     //if(count($errors) > 0){
+     //    echo "<pre>" . var_export($errors, true) . "</pre>";
+     //}
      else{
          //TODO 4
          $db = getDB();
          //lookup our user by email, we must select the password here since mySQL can't do the comparison
-         $stmt = $bd->prepare("SELECT email, password FROM Users WHERE email = :email");
+         $stmt = $db->prepare("SELECT email, password FROM Users WHERE email = :email");
          try
          {
              $r = $stmt->execute([":email" => $email]);
@@ -64,12 +73,18 @@ require(__DIR__."/../../partials/nav.php");?>
                     //remove password from the user object so it doesn't leave the scope (avoids password leakage in code)
                     unset($user["password"]);
                     if(password_verify($password, $hash))
-                       echo "Welcome, $email";
+                    {
+                       //echo "Welcome, $email";
+                       flash("Welcome, $email");
+                       $_SESSION["user"] = $user;
+                    }
                     else   
-                        echo "Invalid password";
+                       // echo "Invalid password";
+                       flash("Invalid Password");
                  }
                  else
-                    echo "Invalid email";
+                   // echo "Invalid email";
+                   flash("Invalid email");
              }
          }
          catch(Exception $e)
@@ -78,4 +93,5 @@ require(__DIR__."/../../partials/nav.php");?>
          }
      }
  }
+ require(__DIR__ . "/../../partials/flash.php");
 ?>
