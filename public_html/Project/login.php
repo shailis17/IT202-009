@@ -32,8 +32,7 @@ require(__DIR__."/../../partials/nav.php");?>
         array_push($errors, "Email must be set");
      }
      //sanitize
-     //$email = filter_var($email, FILTER_SANITIZE_EMAIL);
-     $email = sanitize_email($email);
+     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
      //validate
      if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
         array_push($errors, "Invalid email address");
@@ -51,7 +50,7 @@ require(__DIR__."/../../partials/nav.php");?>
          //TODO 4
          $db = getDB();
          //lookup our user by email, we must select the password here since mySQL can't do the comparison
-         $stmt = $db->prepare("SELECT email, password FROM Users WHERE email = :email");
+         $stmt = $bd->prepare("SELECT email, password FROM Users WHERE email = :email");
          try
          {
              $r = $stmt->execute([":email" => $email]);
@@ -65,11 +64,7 @@ require(__DIR__."/../../partials/nav.php");?>
                     //remove password from the user object so it doesn't leave the scope (avoids password leakage in code)
                     unset($user["password"]);
                     if(password_verify($password, $hash))
-                    {
                        echo "Welcome, $email";
-                       $_SESSION["user"] = $user;
-                       die(header("Location: home.php"));
-                    }
                     else   
                         echo "Invalid password";
                  }
