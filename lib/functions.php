@@ -8,22 +8,34 @@ require_once(__DIR__ . "/db.php");
  * Takes an array, a key, and default value and will return the value from the array if the key exists or the default value.
  * Can pass a flag to determine if the value will immediately echo or just return so it can be set to a variable
  */
-function se($v, $k = null, $default = "", $isEcho = true) {
-    if (is_array($v) && isset($k) && isset($v[$k])) {
+
+$BASE_PATH = '/Project/'; //This is going to be a helper for redirecting to our base project path since it's nested in another folder
+
+function se($v, $k = null, $default = "", $isEcho = true) 
+{
+    if (is_array($v) && isset($k) && isset($v[$k])) 
+    {
         $returnValue = $v[$k];
-    } else if (is_object($v) && isset($k) && isset($v->$k)) {
+    } 
+    else if (is_object($v) && isset($k) && isset($v->$k)) 
+    {
         $returnValue = $v->$k;
-    } else {
+    } 
+    else 
+    {
         $returnValue = $v;
         //added 07-05-2021 to fix case where $k of $v isn't set
         //this is to kep htmlspecialchars happy
-        if (is_array($returnValue) || is_object($returnValue)) {
+        if (is_array($returnValue) || is_object($returnValue)) 
+        {
             $returnValue = $default;
         }
     }
-    if (!isset($returnValue)) {
+    if (!isset($returnValue)) 
+    {
         $returnValue = $default;
     }
+    
     if ($isEcho) {
         //https://www.php.net/manual/en/function.htmlspecialchars.php
         echo htmlspecialchars($returnValue, ENT_QUOTES);
@@ -88,4 +100,28 @@ function get_user_id()
 }
 
 //TODO 4: Flash Message Helpers
+function flash($msg = "", $color = "info")
+{
+    $message = ["text" => $msg, "color" => $color];
+    if (isset($_SESSION['flash'])) 
+    {
+        array_push($_SESSION['flash'], $message);
+    } 
+    else 
+    {
+        $_SESSION['flash'] = array();
+        array_push($_SESSION['flash'], $message);
+    }
+}
+
+function getMessages()
+{
+    if (isset($_SESSION['flash'])) 
+    {
+        $flashes = $_SESSION['flash'];
+        $_SESSION['flash'] = array();
+        return $flashes;
+    }
+    return array();
+}
 ?>

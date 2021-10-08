@@ -21,32 +21,51 @@ require(__DIR__."/../../partials/nav.php");?>
 </script>
 <?php
  //TODO 2: add PHP Code
- if(isset($_POST["email"]) && isset($_POST["password"])){
+ if(isset($_POST["email"]) && isset($_POST["password"]))
+ {
      //get the email key from $_POST, default to "" if not set, and return the value
      $email = se($_POST, "email","", false);
      //same as above but for password
      $password = se($_POST, "password", "", false);
      //TODO 3: validate/use
-     $errors = [];
+     //$errors = [];
+     $hasErrors = false;
      if(empty($email)){
-        array_push($errors, "Email must be set");
+        //array_push($errors, "Email must be set");
+        flash("Email must be set", "warning");
+        $hasErrors = true;
      }
      //sanitize
-     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+     //$email = filter_var($email, FILTER_SANITIZE_EMAIL);
+     $email = sanitize_email($email);
      //validate
-     if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-        array_push($errors, "Invalid email address");
+     //if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+     if(!is_valid_email($email))
+     {
+        //array_push($errors, "Invalid email address");
+        flash("Invalid email address", "warning");
+        $hasErrors = true;
      }
      if(empty($password)){
-         array_push($errors, "Password must be set");
+         //array_push($errors, "Password must be set");
+         flash("Password must be set");
+         $hasErrors = true;
      }
      if(strlen($password) < 8){
-         array_push($errors, "Password must be 8 or more characters");
+         //array_push($errors, "Password must be 8 or more characters");
+         flash("Password must be 8 or more characters", "warning");
+         $hasErrors = true;
      }
-     if(count($errors) > 0){
-         echo "<pre>" . var_export($errors, true) . "</pre>";
+     //if(count($errors) > 0){
+     //    echo "<pre>" . var_export($errors, true) . "</pre>";
+     //}
+     if($hasErrors)
+     {
+         //Nothing to output... flash will do it
+         //can likely flip the if condition
      }
-     else{
+     else
+     {
          //TODO 4
          $db = getDB();
          //lookup our user by email, we must select the password here since mySQL can't do the comparison
@@ -64,18 +83,34 @@ require(__DIR__."/../../partials/nav.php");?>
                     //remove password from the user object so it doesn't leave the scope (avoids password leakage in code)
                     unset($user["password"]);
                     if(password_verify($password, $hash))
-                       echo "Welcome, $email";
-                    else   
-                        echo "Invalid password";
+                    {
+                       //echo "Welcome, $email";
+                       //flash("Welcome, $email");
+                       $_SESSION["user"] = $user;
+                       die(header("Location: home.php"));
+                    }
+                    else
+                    {  
+                       // echo "Invalid password";
+                       flash("Invalid Password");
+                    }
                  }
                  else
-                    echo "Invalid email";
+                 {
+                   // echo "Invalid email";
+                   flash("Invalid email", "danger");
+                 }
              }
          }
          catch(Exception $e)
          {
-             echo "<pre>" . var_export($e, true) . "</pre>";
+            // echo "<pre>" . var_export($e, true) . "</pre>";
+            flash(var_export($e, true));
          }
      }
  }
+?>
+
+<?php
+require(__DIR__ . "/../../partials/flash.php");
 ?>
