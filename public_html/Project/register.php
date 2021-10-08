@@ -8,6 +8,10 @@ require(__DIR__ . "/../../partials/nav.php");
         <input type="email" name="email" required />
     </div>
     <div>
+        <label for="username">Username</label>
+        <input type="text" name="username" required maxlength="30" />
+    </div>
+    <div>
         <label for="pw">Password</label>
         <input type="password" id="pw" name="password" required minlength="8" />
     </div>
@@ -33,6 +37,7 @@ require(__DIR__ . "/../../partials/nav.php");
     $email = se($_POST, "email", "", false);
     $password = se($_POST, "password", "", false);
     $confirm = se($_POST, "confirm", "", false);
+    $username = se($_POST, "username", "", false);
     //TODO 3: validate/use
     //$errors = [];
     $hasErrors = false;
@@ -51,6 +56,11 @@ require(__DIR__ . "/../../partials/nav.php");
     {
         // array_push($errors, "Invalid email address");
         flash("Invalid email address");
+        $hasErrors = true;
+    }
+    if(!preg_match('/^[a-z0-9_-]{3,30}$/', $username))
+    {
+        flash("Invalid username, must be alphanumeric and can only contain - and/or _");
         $hasErrors = true;
     }
     if(empty($password))
@@ -90,10 +100,10 @@ require(__DIR__ . "/../../partials/nav.php");
         flash("Welcome, $email");
         $hash = password_hash($password, PASSWORD_BCRYPT);
         $db = getDB();
-        $stmt = $db->prepare("INSERT INTO Users(email, password) VALUES (:email, :password)");
+        $stmt = $db->prepare("INSERT INTO Users(email, password, username) VALUES (:email, :password, :username)");
         try
         {
-            $stmt->execute([":email" => $email, ":password" => $hash]);
+            $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username]);
             //echo "You've been registered!";
             flash("You've been registered!");
         }
