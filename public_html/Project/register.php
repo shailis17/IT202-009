@@ -46,7 +46,8 @@ require(__DIR__ . "/../../partials/nav.php");
     //$email = filter_var($email, FILTER_SANITIZE_EMAIL);
     $email = sanitize_email($email);
     //validate
-    if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+    //if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+    if(!is_valid_email($email))
     {
         // array_push($errors, "Invalid email address");
         flash("Invalid email address");
@@ -55,7 +56,7 @@ require(__DIR__ . "/../../partials/nav.php");
     if(empty($password))
     {
        //array_push($errors, "Password must be set");
-       flash("Invalid email address");
+       flash("Password must be set");
        $hasErrors = true;
     }
     if(empty($confirm))
@@ -79,6 +80,10 @@ require(__DIR__ . "/../../partials/nav.php");
     
     //if(count($errors) > 0)
     //    echo "<pre>" . var_export($errors, true) . "</pre>";
+    if($hasErrors)
+    {
+        //flash("<pre>" . var_export($errors, true) . "</pre>");
+    }
     else
     {
         //echo "Welcome, $email!";
@@ -96,9 +101,13 @@ require(__DIR__ . "/../../partials/nav.php");
         {
             //echo "There was a problem registering";
             flash("There was a problem registering");
-            echo "<pre>" . var_export($e, true) . "</pre>";
+            //echo "<pre>" . var_export($e, true) . "</pre>";
+            flash("<pre>" . var_export($e, true) . "</pre>");
         }
     }
  }
- require(__DIR__ . "/../../partials/flash.php");
+?>
+
+<?php
+require(__DIR__ . "/../../partials/flash.php");
 ?>

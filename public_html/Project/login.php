@@ -21,7 +21,8 @@ require(__DIR__."/../../partials/nav.php");?>
 </script>
 <?php
  //TODO 2: add PHP Code
- if(isset($_POST["email"]) && isset($_POST["password"])){
+ if(isset($_POST["email"]) && isset($_POST["password"]))
+ {
      //get the email key from $_POST, default to "" if not set, and return the value
      $email = se($_POST, "email","", false);
      //same as above but for password
@@ -31,15 +32,18 @@ require(__DIR__."/../../partials/nav.php");?>
      $hasErrors = false;
      if(empty($email)){
         //array_push($errors, "Email must be set");
-        flash("Email must be set");
+        flash("Email must be set", "warning");
         $hasErrors = true;
      }
      //sanitize
-     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+     //$email = filter_var($email, FILTER_SANITIZE_EMAIL);
+     $email = sanitize_email($email);
      //validate
-     if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+     //if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+     if(!is_valid_email($email))
+     {
         //array_push($errors, "Invalid email address");
-        flash("Invalid email address");
+        flash("Invalid email address", "warning");
         $hasErrors = true;
      }
      if(empty($password)){
@@ -49,13 +53,19 @@ require(__DIR__."/../../partials/nav.php");?>
      }
      if(strlen($password) < 8){
          //array_push($errors, "Password must be 8 or more characters");
-         flash("Password must be 8 or more characters");
+         flash("Password must be 8 or more characters", "warning");
          $hasErrors = true;
      }
      //if(count($errors) > 0){
      //    echo "<pre>" . var_export($errors, true) . "</pre>";
      //}
-     else{
+     if($hasErrors)
+     {
+         //Nothing to output... flash will do it
+         //can likely flip the if condition
+     }
+     else
+     {
          //TODO 4
          $db = getDB();
          //lookup our user by email, we must select the password here since mySQL can't do the comparison
@@ -75,23 +85,32 @@ require(__DIR__."/../../partials/nav.php");?>
                     if(password_verify($password, $hash))
                     {
                        //echo "Welcome, $email";
-                       flash("Welcome, $email");
+                       //flash("Welcome, $email");
                        $_SESSION["user"] = $user;
+                       die(header("Location: home.php"));
                     }
-                    else   
+                    else
+                    {  
                        // echo "Invalid password";
                        flash("Invalid Password");
+                    }
                  }
                  else
+                 {
                    // echo "Invalid email";
-                   flash("Invalid email");
+                   flash("Invalid email", "danger");
+                 }
              }
          }
          catch(Exception $e)
          {
-             echo "<pre>" . var_export($e, true) . "</pre>";
+            // echo "<pre>" . var_export($e, true) . "</pre>";
+            flash(var_export($e, true));
          }
      }
  }
- require(__DIR__ . "/../../partials/flash.php");
+?>
+
+<?php
+require(__DIR__ . "/../../partials/flash.php");
 ?>
