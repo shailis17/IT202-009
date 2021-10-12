@@ -1,7 +1,7 @@
 # Project Name: Simple Bank
 ## Project Summary: This project will create a bank simulation for users. They’ll be able to have various accounts, do standard bank functions like deposit, withdraw, internal (user’s accounts)/external(other user’s accounts) transfers, and creating/closing 
-## Github Link: [https://github.com/shailis17/IT202-009/tree/prod]https://github.com/shailis17/IT202-009/tree/prod
-## Project Board Link: [https://github.com/shailis17/IT202-009/projects/1]https://github.com/shailis17/IT202-009/projects/1
+## Github Link: https://github.com/shailis17/IT202-009/tree/prod
+## Project Board Link: https://github.com/shailis17/IT202-009/projects/1
 ## Website Link: (Heroku Prod of Project folder)
 ## Your Name: Shaili Soni
 
