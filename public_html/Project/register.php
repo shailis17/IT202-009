@@ -1,5 +1,6 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
+reset_session();
 ?>
 
 <form onsubmit="return validate(this)" method="POST">
@@ -100,9 +101,10 @@ require(__DIR__ . "/../../partials/nav.php");
         catch (Exception $e)
         {
             //echo "There was a problem registering";
-            flash("There was a problem registering");
+            //flash("There was a problem registering");
             //echo "<pre>" . var_export($e, true) . "</pre>";
-            flash("<pre>" . var_export($e, true) . "</pre>");
+            //flash("<pre>" . var_export($e, true) . "</pre>");
+            users_check_duplicate($e->errorInfo);
         }
     }
  }
