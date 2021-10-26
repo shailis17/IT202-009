@@ -18,6 +18,11 @@ session_start();
 //nav will pull in functions and functions will pull in db
 require(__DIR__."/../lib/functions.php");
 ?>
+
+<!-- include css and js files -->
+<link rel="stylesheet" href="styles.css">
+<script src="helpers.js"></script>
+
 <nav>
     <ul>
         <?php if (is_logged_in()) : ?>

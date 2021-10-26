@@ -56,9 +56,16 @@ function is_valid_email($email = "")
 }
 
 //TODO 3: User helpers
-function is_logged_in() 
+//function is_logged_in() 
+function is_logged_in($redirect = false, $destination = "login.php")
 {
-    return isset($_SESSION["user"]); //se($_SESSION, "user", false, false);
+    //return isset($_SESSION["user"]); //<== se($_SESSION, "user", false, false);
+    $isLoggedIn = isset($_SESSION["user"]);
+    if ($redirect && !$isLoggedIn) {
+        flash("You must be logged in to view this page", "warning");
+        die(header("Location: $destination"));
+    }
+    return $isLoggedIn; //se($_SESSION, "user", false, false);
 }
 function has_role($role) 
 {
@@ -123,5 +130,29 @@ function getMessages()
         return $flashes;
     }
     return array();
+}
+
+//TODO generic helpers
+function reset_session()
+{
+    session_unset();
+    session_destroy();
+    session_start();
+}
+function users_check_duplicate($errorInfo)
+{
+    if ($errorInfo[1] === 1062) {
+        //https://www.php.net/manual/en/function.preg-match.php
+        preg_match("/Users.(\w+)/", $errorInfo[2], $matches);
+        if (isset($matches[1])) {
+            flash("The chosen " . $matches[1] . " is not available.", "warning");
+        } else {
+            //TODO come up with a nice error message
+            flash("<pre>" . var_export($errorInfo, true) . "</pre>");
+        }
+    } else {
+        //TODO come up with a nice error message
+        flash("<pre>" . var_export($errorInfo, true) . "</pre>");
+    }
 }
 ?>
