@@ -221,10 +221,12 @@
         // Score if the ball goes past a paddle
         if (ball.x < leftPaddle.x) {
             rightScore++;
+            changeBall();
             resetBall();
             ball.sX *= -1;
         } else if (ball.x + ball.w > rightPaddle.x + rightPaddle.w) {
             leftScore++;
+            changeBall();
             resetBall();
             ball.sX *= -1;
         }
@@ -252,6 +254,15 @@
             leftPaddle = makeRect(25, leftPaddle.y, paddleWidth, Math.random()*100 + 30, 5, '#BC0000');
             rightPaddle = makeRect(canvas.width - paddleWidth - 25, rightPaddle.y, paddleWidth, Math.random()*100 + 30, 5, '#0000BC');
         }, 5000);
+
+        //SIGNIFICANT CHANGE #2: change ball size after each score;
+        function changeBall()
+        {
+            ballLength =  Math.random()*50 + 15;
+            
+            ball = makeRect(0, 0, ballLength, ballLength, ballSpeed, '#000000');
+        }
+
 
         // Show the menu to start the game
         menu();
