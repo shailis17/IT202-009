@@ -247,6 +247,12 @@
         }
         }
 
+        //SIGNIFICANT CHANGE #1: change paddle heights every 5 seconds
+        window.setInterval(function () {
+            leftPaddle = makeRect(25, leftPaddle.y, paddleWidth, Math.random()*100 + 30, 5, '#BC0000');
+            rightPaddle = makeRect(canvas.width - paddleWidth - 25, rightPaddle.y, paddleWidth, Math.random()*100 + 30, 5, '#0000BC');
+        }, 5000);
+
         // Show the menu to start the game
         menu();
         canvas.focus();
