@@ -35,7 +35,24 @@ require(__DIR__."/../../partials/nav.php");?>
         flash("Email must be set", "warning");
         $hasErrors = true;
      }
-     //sanitize
+     if (str_contains($email, "@")) //if $email is an email
+     {
+        //sanitize
+        $email = sanitize_email($email);
+        //validate
+        if (!is_valid_email($email)) {
+            flash("Invalid email address", "warning");
+            $hasError = true;
+        }
+     } 
+     else //is $email a Username?
+     {
+        if (!preg_match('/^[a-z0-9_-]{3,30}$/i', $email)) {
+            flash("Username must only be alphanumeric and can only contain - or _", "warning");
+            $hasError = true;
+        }
+    }
+     /*//sanitize
      //$email = filter_var($email, FILTER_SANITIZE_EMAIL);
      $email = sanitize_email($email);
      //validate
@@ -45,7 +62,7 @@ require(__DIR__."/../../partials/nav.php");?>
         //array_push($errors, "Invalid email address");
         flash("Invalid email address", "warning");
         $hasErrors = true;
-     }
+     }*/
      if(empty($password)){
          //array_push($errors, "Password must be set");
          flash("Password must be set");
@@ -69,12 +86,13 @@ require(__DIR__."/../../partials/nav.php");?>
          //TODO 4
          $db = getDB();
          //lookup our user by email, we must select the password here since mySQL can't do the comparison
-         $stmt = $db->prepare("SELECT id, email, password FROM Users WHERE email = :email");
+         $stmt = $db->prepare("SELECT id, email, password FROM Users WHERE email = :email OR email = :username");
          try
          {
-             $r = $stmt->execute([":email" => $email]);
-             if($r)
-             {
+            $r = $stmt->execute([":email" => $email]);
+            $u = $stmt->execute([":username" => $email]);
+            if($r)
+            {
                  $user = $stmt->fetch(PDO::FETCH_ASSOC);
                  //check if we got the user, this returns false if no records matched
                  if($user)
@@ -110,12 +128,50 @@ require(__DIR__."/../../partials/nav.php");?>
                        flash("Invalid Password");
                     }
                  }
-                 else
-                 {
-                   // echo "Invalid email";
-                   flash("Invalid email", "danger");
-                 }
-             }
+            }
+            if($u)
+            {
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                //check if we got the user, this returns false if no records matched
+                if($user)
+                {
+                    $hash = $user["password"];
+                    //remove password from the user object so it doesn't leave the scope (avoids password leakage in code)
+                    unset($user["password"]);
+                    if(password_verify($password, $hash))
+                    {
+                       //echo "Welcome, $email";
+                       //flash("Welcome, $email");
+                       $_SESSION["user"] = $user;
+                       //lookup potential roles:
+                       $stmt = $db->prepare("SELECT Roles.name FROM Roles 
+                        JOIN UserRoles on Roles.id = UserRoles.role_id 
+                        where UserRoles.user_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
+                        $stmt->execute([":user_id" => $user["id"]]);
+                        $roles = $stmt->fetchAll(PDO::FETCH_ASSOC); //fetch all since we'll want multiple
+                        //save roles or empty array
+                        if ($roles) 
+                        {
+                            $_SESSION["user"]["roles"] = $roles; //at least 1 role
+                        } 
+                        else 
+                        {
+                            $_SESSION["user"]["roles"] = []; //no roles
+                        }
+                       die(header("Location: home.php"));
+                    }
+                    else
+                    {  
+                       // echo "Invalid password";
+                       flash("Invalid Password");
+                    }
+                }
+            }
+            else
+            {
+                // echo "Invalid email";
+                flash("Invalid email/username", "danger");
+            }
          }
          catch(Exception $e)
          {

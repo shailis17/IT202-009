@@ -59,7 +59,7 @@ reset_session();
         flash("Invalid email address");
         $hasErrors = true;
     }
-    if(!preg_match('/^[a-z0-9_-]{3,30}$/', $username))
+    if(!preg_match('/^[a-z0-9_-]{3,30}$/i', $username))
     {
         flash("Invalid username, must be alphanumeric and can only contain - and/or _");
         $hasErrors = true;
