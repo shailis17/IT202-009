@@ -2,8 +2,8 @@
 require(__DIR__."/../../partials/nav.php");?>
 <form onsubmit="return validate(this)" method="POST">
     <div>
-        <label for="email">Email</label>
-        <input type="email" name="email" required />
+        <label for="email">Username/Email</label>
+        <input type="text" name="email" required />
     </div>
     <div>
         <label for="pw">Password</label>
@@ -35,7 +35,24 @@ require(__DIR__."/../../partials/nav.php");?>
         flash("Email must be set", "warning");
         $hasErrors = true;
      }
-     //sanitize
+     if (str_contains($email, "@")) //if $email is an email --> check for @ symbol
+     {
+        //sanitize
+        $email = sanitize_email($email);
+        //validate
+        if (!is_valid_email($email)) {
+            flash("Invalid email address", "warning");
+            $hasError = true;
+        }
+     } 
+     else //is $email a Username?
+     {
+        if (!preg_match('/^[a-z0-9_-]{3,30}$/i', $email)) {
+            flash("Username must only be alphanumeric and can only contain - or _", "warning");
+            $hasError = true;
+        }
+    }
+     /*//sanitize
      //$email = filter_var($email, FILTER_SANITIZE_EMAIL);
      $email = sanitize_email($email);
      //validate
@@ -45,7 +62,7 @@ require(__DIR__."/../../partials/nav.php");?>
         //array_push($errors, "Invalid email address");
         flash("Invalid email address", "warning");
         $hasErrors = true;
-     }
+     }*/
      if(empty($password)){
          //array_push($errors, "Password must be set");
          flash("Password must be set");
@@ -69,12 +86,12 @@ require(__DIR__."/../../partials/nav.php");?>
          //TODO 4
          $db = getDB();
          //lookup our user by email, we must select the password here since mySQL can't do the comparison
-         $stmt = $db->prepare("SELECT id, email, password FROM Users WHERE email = :email");
+         $stmt = $db->prepare("SELECT id, email, password FROM Users WHERE email = :email OR username = :email");
          try
          {
-             $r = $stmt->execute([":email" => $email]);
-             if($r)
-             {
+            $r = $stmt->execute([":email" => $email]);
+            if($r)
+            {
                  $user = $stmt->fetch(PDO::FETCH_ASSOC);
                  //check if we got the user, this returns false if no records matched
                  if($user)
@@ -110,12 +127,12 @@ require(__DIR__."/../../partials/nav.php");?>
                        flash("Invalid Password");
                     }
                  }
-                 else
-                 {
-                   // echo "Invalid email";
-                   flash("Invalid email", "danger");
-                 }
-             }
+            }
+            else
+            {
+                // echo "Invalid email";
+                flash("Invalid email/username", "danger");
+            }
          }
          catch(Exception $e)
          {
