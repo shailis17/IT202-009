@@ -98,7 +98,7 @@ reset_session();
     else
     {
         //echo "Welcome, $email!";
-        flash("Welcome, $email");
+        //flash("Welcome, $email");
         $hash = password_hash($password, PASSWORD_BCRYPT);
         $db = getDB();
         $stmt = $db->prepare("INSERT INTO Users(email, password, username) VALUES (:email, :password, :username)");

@@ -23,15 +23,27 @@
 ### Proposal Checklist and Evidence
 
 - Milestone 1
-    - [ ] (mm/dd/yyyy of completion) User will be able to register a new account
+    - [X] (11/2/2021) User will be able to register a new account
         -  List of Evidence of Feature Completion
             - Status: Pending (Completed, Partially working, Incomplete, Pending)
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/11
+                - PR link #2: https://github.com/shailis17/IT202-009/pull/27
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                - Screenshot #1 
+                ![image](https://user-images.githubusercontent.com/83250817/140582985-37f7e4ab-bd6b-4198-91c7-4dafc4e36372.png) 
+                    - Form Fields
+                        - Username, email, password, confirm password (other fields optional)
+                        - Email is required and must be validated
+                        - Username is required
+                        - Confirm password’s match
+                - Screenshot #2 & #3
+                ![image](https://user-images.githubusercontent.com/83250817/140583603-1f7fb04d-8ae4-4c73-91fd-9dc98333e415.png)
+                
+                ![image](https://user-images.githubusercontent.com/83250817/140583739-043c2014-ecec-451b-a521-8e2177afd2ad.png)
+                    - System should let user know if username or email is taken and allow the user to correct the error without wiping/clearing the form
+
     - [ ] (mm/dd/yyyy of completion) User will be able to login to their account (given they enter the correct credentials)
         -  List of Evidence of Feature Completion
             - Status: Pending (Completed, Partially working, Incomplete, Pending)
