@@ -32,7 +32,7 @@ require(__DIR__."/../../partials/nav.php");?>
      $hasErrors = false;
      if(empty($email)){
         //array_push($errors, "Email must be set");
-        flash("Email must be set", "warning");
+        flash("Email must be set", "danger");
         $hasErrors = true;
      }
      if (str_contains($email, "@")) //if $email is an email --> check for @ symbol
@@ -63,9 +63,10 @@ require(__DIR__."/../../partials/nav.php");?>
         flash("Invalid email address", "warning");
         $hasErrors = true;
      }*/
+     
      if(empty($password)){
          //array_push($errors, "Password must be set");
-         flash("Password must be set");
+         flash("Password must be set", "danger");
          $hasErrors = true;
      }
      if(strlen($password) < 8){
@@ -124,7 +125,7 @@ require(__DIR__."/../../partials/nav.php");?>
                     else
                     {  
                        // echo "Invalid password";
-                       flash("Invalid Password");
+                       flash("Invalid Password", "danger");
                     }
                  }
             }

@@ -23,13 +23,14 @@
 ### Proposal Checklist and Evidence
 
 - Milestone 1
-    - [X] (11/2/2021) User will be able to register a new account
+    - [] (DATE OF COMPLETION) User will be able to register a new account
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Partially Working ==> TODO get form to only clear password fields in form
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/11
                 - PR link #2: https://github.com/shailis17/IT202-009/pull/27
+                - PR link #3: TODO ==> MS1-Delvierable-Fixes
             - Screenshots
                 - Screenshot #1 
                 ![image](https://user-images.githubusercontent.com/83250817/140582985-37f7e4ab-bd6b-4198-91c7-4dafc4e36372.png) 
@@ -46,58 +47,74 @@
 
     - [ ] (mm/dd/yyyy of completion) User will be able to login to their account (given they enter the correct credentials)
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Partially Working ==> TODO - User-friendly error message for incorrect username entry
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/31
+                - PR link #2: TODO ==> MS1-Delvierable-Fixes
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
-    - [ ] (mm/dd/yyyy of completion) User will be able to logout
+                - Screenshot #1-3
+                ![image](https://user-images.githubusercontent.com/83250817/140620060-2d50fbd2-648b-4d07-b59c-cddfcbef92c3.png)
+
+                ![image](https://user-images.githubusercontent.com/83250817/140620171-2c431c0f-255c-4a6d-9e4d-6dfabd41f7c8.png)
+
+                TODO ==> Screenshot: figure out how to get invalid username message!
+                    - User should see friendly error messages when an account either doesn’t exist or if passwords don’t match    
+    - [X] (11/6/2021) User will be able to logout
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Completed
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/13
+                - PR link #2: TODO ==> MS1-Deliverable-Fixes
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
-    - [ ] (mm/dd/yyyy of completion) Basic security rules implemented
+                - Screenshot #1
+                ![image](https://user-images.githubusercontent.com/83250817/140619411-24389397-91af-4932-86b4-19461e7c780e.png)
+                    - Logging out will redirect to login page
+                    - User should see a message that they’ve successfully logged out
+                - Screenshot #2
+                ![image](https://user-images.githubusercontent.com/83250817/140619526-c587aed3-5c93-4631-825e-57511fc6ad0b.png)
+                    - Session should be destroyed (so the back button doesn’t allow them access back in) ==> this screenshot is what shows after hitting back button from previous screenshot
+                
+
+    - [X] (11/2/2021 & 11/6/2021) Basic security rules implemented
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Completed
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/28
+                - PR link #2: TODO==> cleanup/fixes
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                - Screenshot #1
+                 ![image](https://user-images.githubusercontent.com/83250817/140619526-c587aed3-5c93-4631-825e-57511fc6ad0b.png)
+                    - Authentication: Function to check if user is logged in, called on appropriate pages that only allow logged in users (ex: home page cannot be seen if logged out )
+
     - [ ] (mm/dd/yyyy of completion) Basic Roles implemented
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Incomplete ==> TODO add function to check if a user has a specific role (we won’t use it for this milestone but it should be usable in the future)
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
-            - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
-    - [ ] (mm/dd/yyyy of completion) Site should have basic styles/theme applied; everything should be styled
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/28 
+            - Screenshots/Evidence
+                - see Project/sql folder
+    - [X] (11/2/2021) Site should have basic styles/theme applied; everything should be styled
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Completed (bootstrap TBA)
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
-            - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
-    - [ ] (mm/dd/yyyy of completion) Any output messages/errors should be “user friendly”
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/30
+            - Screenshots/Evidence
+                - See any screenshot above/below
+                - See styles.css file
+    - [X] (mm/dd/yyyy of completion) Any output messages/errors should be “user friendly”
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Completed
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1 (repeat as necessary)
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                    - Screenshot #1 description explaining what you're trying to show
     - [ ] (mm/dd/yyyy of completion) User will be able to see their profile
         -  List of Evidence of Feature Completion
             - Status: Pending (Completed, Partially working, Incomplete, Pending)

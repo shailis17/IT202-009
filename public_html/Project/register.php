@@ -45,7 +45,7 @@ reset_session();
     if(empty($email))
     {
        //array_push($errors, "Email must be set");
-        flash("Email must be set");
+        flash("Email must be set", "danger");
         $hasErrors = true;
     }
     //sanitize
@@ -56,36 +56,36 @@ reset_session();
     if(!is_valid_email($email))
     {
         // array_push($errors, "Invalid email address");
-        flash("Invalid email address");
+        flash("Invalid email address", "danger");
         $hasErrors = true;
     }
     if(!preg_match('/^[a-z0-9_-]{3,30}$/i', $username))
     {
-        flash("Invalid username, must be alphanumeric and can only contain - and/or _");
+        flash("Invalid username, must be alphanumeric and can only contain - and/or _", "danger");
         $hasErrors = true;
     }
     if(empty($password))
     {
        //array_push($errors, "Password must be set");
-       flash("Password must be set");
+       flash("Password must be set", "danger");
        $hasErrors = true;
     }
     if(empty($confirm))
     {
         //array_push($errors, "Confirm password must be set");
-        flash("Confirm password must be set");
+        flash("Confirm password must be set", "danger");
         $hasErrors = true;
     }
     if(strlen($password) < 8)
     {
         //array_push($errors, "Password must be 8 or more characters");
-        flash("Password must be 8 or more characters");
+        flash("Password must be 8 or more characters", "danger");
         $hasErrors = true;
     }
     if(strlen($password) > 0 && $password !== $confirm)
     {
         //array_push($errors, "Passwords don't match");
-        flash("Passwords don't match");
+        flash("Passwords don't match", "danger");
         $hasErrors = true;
     }
     
@@ -106,7 +106,7 @@ reset_session();
         {
             $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username]);
             //echo "You've been registered!";
-            flash("You've been registered!");
+            flash("You've been registered!", "success");
         }
         catch (Exception $e)
         {
