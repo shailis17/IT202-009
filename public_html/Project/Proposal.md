@@ -60,6 +60,7 @@
 
                 TODO ==> Screenshot: figure out how to get invalid username message!
                     - User should see friendly error messages when an account either doesn’t exist or if passwords don’t match    
+    
     - [X] (11/6/2021) User will be able to logout
         -  List of Evidence of Feature Completion
             - Status: Completed
@@ -75,8 +76,7 @@
                 - Screenshot #2
                 ![image](https://user-images.githubusercontent.com/83250817/140619526-c587aed3-5c93-4631-825e-57511fc6ad0b.png)
                     - Session should be destroyed (so the back button doesn’t allow them access back in) ==> this screenshot is what shows after hitting back button from previous screenshot
-                
-
+    
     - [X] (11/2/2021 & 11/6/2021) Basic security rules implemented
         -  List of Evidence of Feature Completion
             - Status: Completed
@@ -89,14 +89,20 @@
                  ![image](https://user-images.githubusercontent.com/83250817/140619526-c587aed3-5c93-4631-825e-57511fc6ad0b.png)
                     - Authentication: Function to check if user is logged in, called on appropriate pages that only allow logged in users (ex: home page cannot be seen if logged out )
 
-    - [ ] (mm/dd/yyyy of completion) Basic Roles implemented
+    - [X] (11/2/2021) Basic Roles implemented
         -  List of Evidence of Feature Completion
-            - Status: Incomplete ==> TODO add function to check if a user has a specific role (we won’t use it for this milestone but it should be usable in the future)
+            - Status: Complete
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/28 
+                - PR link #2: https://github.com/shailis17/IT202-009/pull/11 ==> `function has_role($role)`
             - Screenshots/Evidence
                 - see Project/sql folder
+                    - Roles table	(id, name, description, is_active, modified, created)
+                    - User Roles table (id, user_id, role_id, is_active, created, modified)
+                - see functions.php file
+                    - Include a function to check if a user has a specific role (we won’t use it for this milestone but it should be usable in the future)
+
     - [X] (11/2/2021) Site should have basic styles/theme applied; everything should be styled
         -  List of Evidence of Feature Completion
             - Status: Completed (bootstrap TBA)
@@ -106,7 +112,8 @@
             - Screenshots/Evidence
                 - See any screenshot above/below
                 - See styles.css file
-    - [X] (mm/dd/yyyy of completion) Any output messages/errors should be “user friendly”
+    
+    - [ ] (mm/dd/yyyy of completion) Any output messages/errors should be “user friendly”
         -  List of Evidence of Feature Completion
             - Status: Completed
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
@@ -115,24 +122,31 @@
             - Screenshots
                 - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
                     - Screenshot #1 description explaining what you're trying to show
+    
     - [ ] (mm/dd/yyyy of completion) User will be able to see their profile
         -  List of Evidence of Feature Completion
             - Status: Pending (Completed, Partially working, Incomplete, Pending)
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/27 
+                - PR link #2: TODO ==> MS1-deliverable-fixes ==> check why username cannot be seen in profile
             - Screenshots
             - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
                 - Screenshot #1 description explaining what you're trying to show
+    
     - [ ] (mm/dd/yyyy of completion) User will be able to edit their profile
         -  List of Evidence of Feature Completion
             - Status: Pending (Completed, Partially working, Incomplete, Pending)
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/27
+                - PR link #2: TODO ==> MS1-deliverable-fixes ==> change email/username 
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                - Screenshot #1 
+                ![image](https://user-images.githubusercontent.com/83250817/140653150-16f7fa6b-827e-4e96-bcba-82212b85ab3e.png)
+                    - Allow password reset (only if the existing correct password is provided)
+                        - Hint: logic for the password check would be similar to login
+
 - Milestone 2
 - Milestone 3
 - Milestone 4
