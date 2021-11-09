@@ -93,10 +93,10 @@ require(__DIR__."/../../partials/nav.php");?>
             $r = $stmt->execute([":email" => $email]);
             if($r)
             {
-                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
-                 //check if we got the user, this returns false if no records matched
-                 if($user)
-                 {
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                //check if we got the user, this returns false if no records matched
+                if($user)
+                {
                     $hash = $user["password"];
                     //remove password from the user object so it doesn't leave the scope (avoids password leakage in code)
                     unset($user["password"]);
@@ -127,13 +127,14 @@ require(__DIR__."/../../partials/nav.php");?>
                        // echo "Invalid password";
                        flash("Invalid Password", "danger");
                     }
-                 }
-            }
-            else
-            {
+                }
+                else
+                {
                 // echo "Invalid email";
                 flash("Invalid email/username", "danger");
+                }
             }
+            
          }
          catch(Exception $e)
          {

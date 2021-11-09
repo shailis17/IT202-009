@@ -47,7 +47,7 @@
                     - System should let user know if username or email is taken and allow the user to correct the error without wiping/clearing the form
 
 
-    - [ ] (mm/dd/yyyy of completion) User will be able to login to their account (given they enter the correct credentials)
+    - [X] (mm/dd/yyyy of completion) User will be able to login to their account (given they enter the correct credentials)
         -  List of Evidence of Feature Completion
             - Status: Partially Working ==> TODO - User-friendly error message for incorrect username entry
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
@@ -60,7 +60,7 @@
 
                 ![image](https://user-images.githubusercontent.com/83250817/140620171-2c431c0f-255c-4a6d-9e4d-6dfabd41f7c8.png)
 
-                TODO ==> Screenshot: figure out how to get invalid username message!
+                ![image](https://user-images.githubusercontent.com/83250817/141016560-028ef19d-4ffb-4c05-8ca6-2b77e234c0c9.png)
                     - User should see friendly error messages when an account either doesn’t exist or if passwords don’t match    
     
     - [X] (11/6/2021) User will be able to logout
