@@ -139,7 +139,8 @@ require(__DIR__."/../../partials/nav.php");?>
          catch(Exception $e)
          {
             // echo "<pre>" . var_export($e, true) . "</pre>";
-            flash(var_export($e, true));
+            //flash(var_export($e, true));
+            flash("An unexpected error occurred, please try again", "danger");
          }
      }
  }

@@ -96,6 +96,7 @@ $username = se($_POST, "username", "", false);
     if($hasErrors)
     {
         //flash("<pre>" . var_export($errors, true) . "</pre>");
+        flash("An unexpected error occurred, please try again", "danger");
     }
     else
     {

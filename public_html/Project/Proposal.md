@@ -47,9 +47,9 @@
                     - System should let user know if username or email is taken and allow the user to correct the error without wiping/clearing the form
 
 
-    - [X] (mm/dd/yyyy of completion) User will be able to login to their account (given they enter the correct credentials)
+    - [X] (11/09/2021) User will be able to login to their account (given they enter the correct credentials)
         -  List of Evidence of Feature Completion
-            - Status: Partially Working ==> TODO - User-friendly error message for incorrect username entry
+            - Status: Complete
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/31
@@ -130,30 +130,29 @@
                 - See any screenshot above/below
                 - See styles.css file
     
-    - [ ] (mm/dd/yyyy of completion) Any output messages/errors should be “user friendly”
+    - [X] (11/09/2021) Any output messages/errors should be “user friendly”
         -  List of Evidence of Feature Completion
             - Status: Completed
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-                - PR link #1 (repeat as necessary)
-            - Screenshots
-                - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                    - Screenshot #1 description explaining what you're trying to show
+                - PR link #1 ==> TODO = MS1-deliverable-fixes
+            - Screenshots & Evidence
+                - See any screenshot above/below
     
     - [X] (11/09/2021) User will be able to see their profile
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Complete
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/27 
-                - PR link #2: TODO ==> MS1-deliverable-fixes ==> check why username cannot be seen in profile
+                - PR link #2: TODO ==> MS1-deliverable-fixes
             - Screenshots
                 ![image](https://user-images.githubusercontent.com/83250817/140989707-e301e88f-7bfc-43d2-a734-6ef21ef928af.png)
                     - User is able to see email & username
     
-    - [ ] (mm/dd/yyyy of completion) User will be able to edit their profile
+    - [X] (11/09/2021) User will be able to edit their profile
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Complete
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/27
