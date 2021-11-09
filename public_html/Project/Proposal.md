@@ -23,9 +23,9 @@
 ### Proposal Checklist and Evidence
 
 - Milestone 1
-    - [] (DATE OF COMPLETION) User will be able to register a new account
+    - [X] (11/09/2021) User will be able to register a new account
         -  List of Evidence of Feature Completion
-            - Status: Partially Working ==> TODO get form to only clear password fields in form
+            - Status: Complete
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/11
@@ -40,10 +40,12 @@
                         - Username is required
                         - Confirm password’s match
                 - Screenshot #2 & #3
-                ![image](https://user-images.githubusercontent.com/83250817/140583603-1f7fb04d-8ae4-4c73-91fd-9dc98333e415.png)
-                
-                ![image](https://user-images.githubusercontent.com/83250817/140583739-043c2014-ecec-451b-a521-8e2177afd2ad.png)
+                ![image](https://user-images.githubusercontent.com/83250817/140988562-3404dfee-9fc6-46c1-b41d-a4c6423353a3.png)
+
+                ![image](https://user-images.githubusercontent.com/83250817/140989216-afe10000-f77a-4f5b-8462-009208ef6120.png)
+
                     - System should let user know if username or email is taken and allow the user to correct the error without wiping/clearing the form
+
 
     - [ ] (mm/dd/yyyy of completion) User will be able to login to their account (given they enter the correct credentials)
         -  List of Evidence of Feature Completion
@@ -123,7 +125,7 @@
                 - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
                     - Screenshot #1 description explaining what you're trying to show
     
-    - [ ] (mm/dd/yyyy of completion) User will be able to see their profile
+    - [X] (11/09/2021) User will be able to see their profile
         -  List of Evidence of Feature Completion
             - Status: Pending (Completed, Partially working, Incomplete, Pending)
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
@@ -131,8 +133,8 @@
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/27 
                 - PR link #2: TODO ==> MS1-deliverable-fixes ==> check why username cannot be seen in profile
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                ![image](https://user-images.githubusercontent.com/83250817/140989707-e301e88f-7bfc-43d2-a734-6ef21ef928af.png)
+                    - User is able to see email & username
     
     - [ ] (mm/dd/yyyy of completion) User will be able to edit their profile
         -  List of Evidence of Feature Completion
