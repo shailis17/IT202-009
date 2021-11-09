@@ -102,7 +102,22 @@
                 - see Project/sql folder
                     - Roles table	(id, name, description, is_active, modified, created)
                     - User Roles table (id, user_id, role_id, is_active, created, modified)
-                - see functions.php file
+                - code snippet from functions.php file
+                    
+                    `function has_role($role)` 
+                    `{`
+                    `    if (is_logged_in() && isset($_SESSION["user"]["roles"])) `
+                    `    {`
+                    `        foreach ($_SESSION["user"]["roles"] as $r) `
+                    `        {`
+                    `            if ($r["name"] === $role) `
+                    `            {`
+                    `                return true;`
+                    `            }`
+                    `        }`
+                    `    }`
+                    `    return false;`
+                    `}`
                     - Include a function to check if a user has a specific role (we won’t use it for this milestone but it should be usable in the future)
 
     - [X] (11/2/2021) Site should have basic styles/theme applied; everything should be styled
@@ -148,6 +163,11 @@
                 ![image](https://user-images.githubusercontent.com/83250817/140653150-16f7fa6b-827e-4e96-bcba-82212b85ab3e.png)
                     - Allow password reset (only if the existing correct password is provided)
                         - Hint: logic for the password check would be similar to login
+                - Screenshot #2 & #3
+                ![image](https://user-images.githubusercontent.com/83250817/141014149-0966939d-ce72-4f3d-b1c9-f0e3e8617ecd.png)
+
+                ![image](https://user-images.githubusercontent.com/83250817/141014514-05519f04-1daa-400e-85be-e48bfd349d9f.png)
+                    - Changing username/email should properly check to see if it’s available before allowing the change
 
 - Milestone 2
 - Milestone 3

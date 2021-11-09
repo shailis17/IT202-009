@@ -51,7 +51,7 @@ if (isset($_POST["save"])) {
     $current_password = se($_POST, "currentPassword", null, false);
     $new_password = se($_POST, "newPassword", null, false);
     $confirm_password = se($_POST, "confirmPassword", null, false);
-    if (isset($current_password) && isset($new_password) && isset($confirm_password)) {
+    if (!empty($current_password) && !empty($new_password) && !empty($confirm_password)) {
         if ($new_password === $confirm_password) {
             //TODO validate current
             $stmt = $db->prepare("SELECT password from Users where id = :id");
