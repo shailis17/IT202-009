@@ -32,7 +32,7 @@ require(__DIR__."/../../partials/nav.php");?>
      $hasErrors = false;
      if(empty($email)){
         //array_push($errors, "Email must be set");
-        flash("Email must be set", "warning");
+        flash("Email must be set", "danger");
         $hasErrors = true;
      }
      if (str_contains($email, "@")) //if $email is an email --> check for @ symbol
@@ -63,9 +63,10 @@ require(__DIR__."/../../partials/nav.php");?>
         flash("Invalid email address", "warning");
         $hasErrors = true;
      }*/
+     
      if(empty($password)){
          //array_push($errors, "Password must be set");
-         flash("Password must be set");
+         flash("Password must be set", "danger");
          $hasErrors = true;
      }
      if(strlen($password) < 8){
@@ -86,16 +87,16 @@ require(__DIR__."/../../partials/nav.php");?>
          //TODO 4
          $db = getDB();
          //lookup our user by email, we must select the password here since mySQL can't do the comparison
-         $stmt = $db->prepare("SELECT id, email, password FROM Users WHERE email = :email OR username = :email");
+         $stmt = $db->prepare("SELECT id, email, username, password FROM Users WHERE email = :email OR username = :email");
          try
          {
             $r = $stmt->execute([":email" => $email]);
             if($r)
             {
-                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
-                 //check if we got the user, this returns false if no records matched
-                 if($user)
-                 {
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                //check if we got the user, this returns false if no records matched
+                if($user)
+                {
                     $hash = $user["password"];
                     //remove password from the user object so it doesn't leave the scope (avoids password leakage in code)
                     unset($user["password"]);
@@ -124,20 +125,22 @@ require(__DIR__."/../../partials/nav.php");?>
                     else
                     {  
                        // echo "Invalid password";
-                       flash("Invalid Password");
+                       flash("Invalid Password", "danger");
                     }
-                 }
-            }
-            else
-            {
+                }
+                else
+                {
                 // echo "Invalid email";
                 flash("Invalid email/username", "danger");
+                }
             }
+            
          }
          catch(Exception $e)
          {
             // echo "<pre>" . var_export($e, true) . "</pre>";
-            flash(var_export($e, true));
+            //flash(var_export($e, true));
+            flash("An unexpected error occurred, please try again", "danger");
          }
      }
  }
