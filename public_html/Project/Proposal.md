@@ -244,6 +244,95 @@
                     - Changing username/email should properly check to see if it’s available before allowing the change
 
 - Milestone 2
+    - [ ] (mm/dd/yyyy of completion) Create the Accounts table
+        -  List of Evidence of Feature Completion
+            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Pull Requests
+            - PR link #1 (repeat as necessary)
+            - Screenshots
+            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                - Screenshot #1 description explaining what you're trying to show
+    
+    - [ ] (mm/dd/yyyy of completion) Initial setup scripts in sql folder
+        -  List of Evidence of Feature Completion
+            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Pull Requests
+            - PR link #1 (repeat as necessary)
+            - Screenshots
+            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                - Screenshot #1 description explaining what you're trying to show
+
+    - [ ] (mm/dd/yyyy of completion) Create the Transactions table
+        -  List of Evidence of Feature Completion
+            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Pull Requests
+            - PR link #1 (repeat as necessary)
+            - Screenshots
+            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                - Screenshot #1 description explaining what you're trying to show
+
+    - [ ] (mm/dd/yyyy of completion) Dashboard page
+        -  List of Evidence of Feature Completion
+            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Pull Requests
+            - PR link #1 (repeat as necessary)
+            - Screenshots
+            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                - Screenshot #1 description explaining what you're trying to show
+
+    - [ ] (mm/dd/yyyy of completion) User will be able to create a checking account
+        -  List of Evidence of Feature Completion
+            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Pull Requests
+            - PR link #1 (repeat as necessary)
+            - Screenshots
+            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                - Screenshot #1 description explaining what you're trying to show
+
+    - [ ] (mm/dd/yyyy of completion) User will be able to list their accounts
+        -  List of Evidence of Feature Completion
+            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Pull Requests
+            - PR link #1 (repeat as necessary)
+            - Screenshots
+            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                - Screenshot #1 description explaining what you're trying to show
+
+    - [ ] (mm/dd/yyyy of completion) User will be able to click an account for more information (aka Transaction History page)
+        -  List of Evidence of Feature Completion
+            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Pull Requests
+            - PR link #1 (repeat as necessary)
+            - Screenshots
+            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                - Screenshot #1 description explaining what you're trying to show
+
+    - [ ] (mm/dd/yyyy of completion) User will be able to deposit/withdraw from their account(s)
+        -  List of Evidence of Feature Completion
+            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Pull Requests
+            - PR link #1 (repeat as necessary)
+            - Screenshots
+            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                - Screenshot #1 description explaining what you're trying to show
+
+            - [ ] (mm/dd/yyyy of completion) Each transaction is recorded as a transaction pair in the Transaction table per the details below
+                -  List of Evidence of Feature Completion
+                    - Status: Pending (Completed, Partially working, Incomplete, Pending)
+                    - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+                    - Pull Requests
+                    - PR link #1 (repeat as necessary)
+                    - Screenshots
+                    - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                        - Screenshot #1 description explaining what you're trying to show
 - Milestone 3
 - Milestone 4
 ### Intructions
