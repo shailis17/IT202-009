@@ -1,0 +1,33 @@
+.alert-success {
+    background-color: green;
+    color: mintcream;
+}
+
+.alert-warning {
+    background-color: yellow;
+    text-align: center;
+}
+
+.alert-danger {
+    background-color: red;
+    color: white;
+    font-size: large;
+}
+
+.alert-info {
+    color:green;
+    font-size: medium;
+}
+nav li{display: inline}
+nav li a
+{   background-color: mistyrose;
+    text-align: center;
+    padding: 14px 16px;
+}
+nav li a:hover {background-color: rosybrown}
+
+body{
+    background-color:seashell;
+    color:maroon;
+
+}
