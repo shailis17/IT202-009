@@ -22,11 +22,13 @@ if (isset($_POST["save"])) {
                 flash("The chosen " . $matches[1] . " is not available.", "warning");
             } else {
                 //TODO come up with a nice error message
-                echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+                //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+                flash("An unexpected error occurred, please try again", "danger");
             }
         } else {
             //TODO come up with a nice error message
-            echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+            //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+            flash("An unexpected error occurred, please try again", "danger");
         }
     }
     //select fresh data from table
@@ -51,7 +53,7 @@ if (isset($_POST["save"])) {
     $current_password = se($_POST, "currentPassword", null, false);
     $new_password = se($_POST, "newPassword", null, false);
     $confirm_password = se($_POST, "confirmPassword", null, false);
-    if (isset($current_password) && isset($new_password) && isset($confirm_password)) {
+    if (!empty($current_password) && !empty($new_password) && !empty($confirm_password)) {
         if ($new_password === $confirm_password) {
             //TODO validate current
             $stmt = $db->prepare("SELECT password from Users where id = :id");
@@ -73,7 +75,8 @@ if (isset($_POST["save"])) {
                     }
                 }
             } catch (Exception $e) {
-                echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+                //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+                flash("An unexpected error occurred, please try again", "danger");
             }
         } else {
             flash("New passwords don't match", "warning");
