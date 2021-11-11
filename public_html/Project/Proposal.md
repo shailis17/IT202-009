@@ -78,9 +78,38 @@
 
                     ![image](https://user-images.githubusercontent.com/83250817/141016560-028ef19d-4ffb-4c05-8ca6-2b77e234c0c9.png)
                     - User should see friendly error messages when an account either doesn’t exist or if passwords don’t match    
-                - Screenshot #4
-
-                    ![image](https://user-images.githubusercontent.com/83250817/141133210-df0a7a08-a0d8-4374-a4e3-3c82d61be158.png)
+                - Code Snippet:
+                    
+                    ` $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                    //check if we got the user, this returns false if no records matched
+                    if($user)
+                    {
+                    $hash = $user["password"];
+                    //remove password from the user object so it doesn't leave the scope (avoids password leakage in code)
+                    unset($user["password"]);
+                    if(password_verify($password, $hash))
+                    {
+                       //echo "Welcome, $email";
+                       //flash("Welcome, $email");
+                       $_SESSION["user"] = $user;
+                       //lookup potential roles:
+                       $stmt = $db->prepare("SELECT Roles.name FROM Roles 
+                        JOIN UserRoles on Roles.id = UserRoles.role_id 
+                        where UserRoles.user_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
+                        $stmt->execute([":user_id" => $user["id"]]);
+                        $roles = $stmt->fetchAll(PDO::FETCH_ASSOC); //fetch all since we'll want multiple
+                        //save roles or empty array
+                        if ($roles) 
+                        {
+                            $_SESSION["user"]["roles"] = $roles; //at least 1 role
+                        } 
+                        else 
+                        {
+                            $_SESSION["user"]["roles"] = []; //no roles
+                        }
+                       die(header("Location: home.php"));
+                    }`
+                        
                     - Logging in should fetch the user’s details (and roles) and save them into the session
                     - User will be directed to a landing page upon login
                         - This is a protected page (non-logged in users shouldn’t have access)
@@ -126,13 +155,17 @@
                             - ex: home page cannot be seen if logged out
                             ![image](https://user-images.githubusercontent.com/83250817/140619526-c587aed3-5c93-4631-825e-57511fc6ad0b.png)
 
-    - [X] (11/2/2021) Basic Roles implemented
+    - [X] (11/11/2021) Basic Roles implemented
         -  List of Evidence of Feature Completion
             - Status: Complete
-            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Direct Links: 
+                - https://sss8-prod.herokuapp.com/Project/admin/create_role.php
+                - https://sss8-prod.herokuapp.com/Project/admin/assign_roles.php
+                - https://sss8-prod.herokuapp.com/Project/admin/list_roles.php
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/28 
                 - PR link #2: https://github.com/shailis17/IT202-009/pull/11 ==> `function has_role($role)`
+                - PR link #3: https://github.com/shailis17/IT202-009/pull/35
             - Screenshots/Evidence
                 - see Project/sql folder
                     - Roles table	(id, name, description, is_active, modified, created)
