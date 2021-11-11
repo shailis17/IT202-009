@@ -137,6 +137,13 @@
                 - see Project/sql folder
                     - Roles table	(id, name, description, is_active, modified, created)
                     - User Roles table (id, user_id, role_id, is_active, created, modified)
+                - admin restricted pages:
+                    ![image](https://user-images.githubusercontent.com/83250817/141375969-dee62b19-8a51-4f8f-beab-c82b0c739bf5.png)
+
+                    ![image](https://user-images.githubusercontent.com/83250817/141376005-4dfd30aa-a03d-43b8-9344-db9221ab1110.png)
+
+                    ![image](https://user-images.githubusercontent.com/83250817/141376037-ecbe80df-c21f-425c-b8ec-1ab215c6631b.png)
+
                 - code snippet from functions.php file
                     
                     `function has_role($role) 
