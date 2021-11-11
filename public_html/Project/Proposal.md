@@ -2,7 +2,7 @@
 ## Project Summary: This project will create a bank simulation for users. They’ll be able to have various accounts, do standard bank functions like deposit, withdraw, internal (user’s accounts)/external(other user’s accounts) transfers, and creating/closing 
 ## Github Link: https://github.com/shailis17/IT202-009/tree/prod
 ## Project Board Link: https://github.com/shailis17/IT202-009/projects/1
-## Website Link: (Heroku Prod of Project folder)
+## Website Link: https://sss8-prod.herokuapp.com/Project
 ## Your Name: Shaili Soni
 
 <!--
@@ -26,7 +26,7 @@
     - [X] (11/09/2021) User will be able to register a new account
         -  List of Evidence of Feature Completion
             - Status: Complete
-            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/register.php
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/11
                 - PR link #2: https://github.com/shailis17/IT202-009/pull/27
@@ -65,7 +65,7 @@
     - [X] (11/09/2021) User will be able to login to their account (given they enter the correct credentials)
         -  List of Evidence of Feature Completion
             - Status: Complete
-            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/login.php
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/31
                 - PR link #2: https://github.com/shailis17/IT202-009/pull/32  
@@ -90,7 +90,7 @@
     - [X] (11/6/2021) User will be able to logout
         -  List of Evidence of Feature Completion
             - Status: Completed
-            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/logout.php
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/13
                 - PR link #2: https://github.com/shailis17/IT202-009/pull/32
@@ -106,7 +106,7 @@
     - [X] (11/6/2021) Basic security rules implemented
         -  List of Evidence of Feature Completion
             - Status: Completed
-            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/home.php
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/28
                 - PR link #2: https://github.com/shailis17/IT202-009/pull/32
@@ -158,7 +158,7 @@
     - [X] (11/2/2021) Site should have basic styles/theme applied; everything should be styled
         -  List of Evidence of Feature Completion
             - Status: Completed (bootstrap TBA)
-            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/login.php
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/30
             - Screenshots/Evidence
@@ -168,7 +168,7 @@
     - [X] (11/09/2021) Any output messages/errors should be “user friendly”
         -  List of Evidence of Feature Completion
             - Status: Completed
-            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/login.php
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/32
             - Screenshots & Evidence
@@ -177,7 +177,7 @@
     - [X] (11/09/2021) User will be able to see their profile
         -  List of Evidence of Feature Completion
             - Status: Complete
-            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/profile.php
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/27 
                 - PR link #2: https://github.com/shailis17/IT202-009/pull/32
@@ -188,7 +188,7 @@
     - [X] (11/09/2021) User will be able to edit their profile
         -  List of Evidence of Feature Completion
             - Status: Complete
-            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/profile.php
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/27
                 - PR link #2: https://github.com/shailis17/IT202-009/pull/32
