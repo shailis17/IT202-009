@@ -245,6 +245,42 @@
 
 - Milestone 2
 - Milestone 3
+    - [ ] (mm/dd/yyyy of completion) User will be able to transfer between their accounts
+        -  List of Evidence of Feature Completion
+            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Pull Requests
+            - PR link #1 (repeat as necessary)
+            - Screenshots
+            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                - Screenshot #1 description explaining what you're trying to show
+    - [ ] (mm/dd/yyyy of completion) Transaction History page
+        -  List of Evidence of Feature Completion
+            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Pull Requests
+            - PR link #1 (repeat as necessary)
+            - Screenshots
+            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                - Screenshot #1 description explaining what you're trying to show
+    - [ ] (mm/dd/yyyy of completion) User’s profile page should record/show First and Last name
+        -  List of Evidence of Feature Completion
+            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Pull Requests
+            - PR link #1 (repeat as necessary)
+            - Screenshots
+            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                - Screenshot #1 description explaining what you're trying to show
+    - [ ] (mm/dd/yyyy of completion) User will be able to transfer funds to another user’s account
+        -  List of Evidence of Feature Completion
+            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Pull Requests
+            - PR link #1 (repeat as necessary)
+            - Screenshots
+            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                - Screenshot #1 description explaining what you're trying to show
 - Milestone 4
 ### Intructions
 #### Don't delete this
