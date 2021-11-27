@@ -197,11 +197,10 @@ function get_or_create_account()
                 {
                     try 
                     {
-                        $account_number = str_pad(get_user_account_id(),12,"202", STR_PAD_BOTH);;
+                        $aid = $db->lastInsertId();
+                        $account_number = str_pad($aid,12,"202", STR_PAD_LEFT);
                         $stmt->execute([":an" => $account_number, ":uid" => $user_id]);
                         $created = true; //if we got here it was a success, let's exit
-                        $aid = $db->lastInsertId();
-                        flash("Welcome! Your account has been created successfully", "success");
                     } 
                     catch (PDOException $e) 
                     {
@@ -219,6 +218,11 @@ function get_or_create_account()
                 //loop exited, let's assign the new values
                 $account["id"] = $aid;
                 $account["account_number"] = $account_number;
+                $account["balance"] = $result["balance"];
+                $account["account_type"] = $result["account_type"];
+
+                flash("Welcome! Your account has been created successfully", "success");
+                //die(header("Location: my_accounts.php"));
             } 
             else 
             {
