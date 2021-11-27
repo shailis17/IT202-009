@@ -32,7 +32,7 @@ crossorigin="anonymous"></script>
 
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-    <ul>
+    <ul class="navbar-nav">
         <?php if (is_logged_in()) : ?>
             <li><a href="<?php echo get_url('home.php'); ?>">Home</a></li>
             <li><a href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
