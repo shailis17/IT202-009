@@ -3,14 +3,15 @@
 require(__DIR__ . "/../../partials/nav.php");
 
 //handle the toggle first so select pulls fresh data
-$query = "SELECT account_number, account_type, balance from Accounts";
-$params = null;
 $uid = get_user_id();
+$query = "SELECT account_number, account_type, balance from Accounts ";
+$params = null;
 if (isset($_POST["user_id"])) {
     $search = se($_POST, "user_id", "", false);
     $query .= " WHERE user_id LIKE :uid";
-    $params =  [":role" => "%$search%"];
+    $params =  [":user_id" => "%$search%"];
 }
+
 $query .= " ORDER BY created desc LIMIT 5";
 $db = getDB();
 $stmt = $db->prepare($query);
@@ -30,11 +31,7 @@ try {
 ?>
 
 <div class="container-fluid">
-    <h2>List Roles</h2>
-    <form method="POST">
-        <input type="search" name="role" placeholder="Role Filter" />
-        <input type="submit" value="Search"/>
-    </form>
+    <h2>My Accounts</h2>
     <table class="table">
         <thead>
             <th>Account Number</th>
@@ -55,11 +52,7 @@ try {
                         <td>
                             <form method="POST">
                                 <input type="hidden" name="account_id" value="<?php se($account, 'id'); ?>" />
-                                <?php if (isset($search) && !empty($search)) : ?>
-                                    <?php /* if this is part of a search, lets persist the search criteria so it reloads correctly*/ ?>
-                                    <input type="hidden" name="account" value="<?php se($search, null); ?>" />
-                                <?php endif; ?>
-                                <input type="submit" value="Toggle" />
+                                <input type="submit" value="More Info" />
                             </form>
                         </td>
                     </tr>
