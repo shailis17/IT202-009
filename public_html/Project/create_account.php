@@ -27,7 +27,7 @@ if (isset($_POST["checkings"]) && isset($_POST["deposit"]))
             try {
                 $stmt->execute([":an" => $an, ":uid" => null, ":type" => null, ":deposit" => null]);
                 $account_id = $db->lastInsertId();
-                flash("account_id = $account_id");
+                //flash("account_id = $account_id");
                 $an = str_pad($account_id,12,"202", STR_PAD_LEFT);
                 change_balance($deposit, "deposit", -1, $account_id, "opening balance");
                 refresh_account_balance();
