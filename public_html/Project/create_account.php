@@ -68,7 +68,7 @@ else
         </div>
         <div class="mb-3">
             <label class="form-label" for="d">Deposit (Min = $5) </label>
-            <input type="number" name="deposit" id="d"></input>
+            <input class="form-control" type="number" name="deposit" id="d"></input>
         </div>
         <input type="submit" value="Create Account" />
     </form>
