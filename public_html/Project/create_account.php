@@ -20,15 +20,19 @@ if (isset($_POST["checkings"]) && isset($_POST["deposit"]))
         try 
         {
             $db = getDB();
+            $an = null;
             $stmt = $db->prepare("INSERT INTO Accounts (account_number, user_id, balance, account_type) VALUES(:an, :uid, :deposit, :type)");
             $uid = get_user_id(); //caching a reference
-            $account_id = $db->lastInsertId() + 1;
-            $an = str_pad($account_id,12,"202", STR_PAD_LEFT);
-            change_balance($deposit, "deposit", -1, $account_id, "opening balance");
-            refresh_account_balance();
 
             try {
+                $stmt->execute([":an" => $an, ":uid" => null, ":type" => null, ":deposit" => null]);
+                $account_id = $db->lastInsertId();
+                flash("account_id = $account_id");
+                $an = str_pad($account_id,12,"202", STR_PAD_LEFT);
+                change_balance($deposit, "deposit", -1, $account_id, "opening balance");
+                refresh_account_balance();
                 $stmt->execute([":an" => $an, ":uid" => $uid, ":type" => $type, ":deposit" => $deposit]);
+                
                 flash("Successfully created account!", "success");
             } 
             catch (PDOException $e) {

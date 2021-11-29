@@ -7,14 +7,12 @@ if (!is_logged_in()) {
     die(header("Location: " . get_url("home.php")));
 }
 
-//handle the toggle first so select pulls fresh data
 $uid = get_user_id();
 $query = "SELECT account_number, account_type, balance, created from Accounts ";
 $params = null;
-//if (isset($_POST["user_id"])) {
-    $query .= " WHERE user_id = :uid";
-    $params =  [":uid" => "$uid"];
-//}
+
+$query .= " WHERE user_id = :uid";
+$params =  [":uid" => "$uid"];
 
 $query .= " ORDER BY created desc LIMIT 5";
 $db = getDB();
@@ -26,38 +24,36 @@ try {
     if ($results) {
         $accounts = $results;
     } else {
-        flash("No matches found", "warning");
+        flash("No accounts found", "warning");
     }
 } catch (PDOException $e) {
     flash(var_export($e->errorInfo, true), "danger");
 }
 
-
 function get_account_info($src_id)
 {
-    $q = "SELECT src, dest, transactionType, balanceChange, memo, created from Transaction_History";
-    $p = null;
-    //if (isset($_POST["account_id"])) {
-        $q .= " WHERE src = :src_id";
-        $p =  [":src_id" => "$src_id"];
-    //}
-    
-    $q .= " ORDER BY created desc LIMIT 10";
+    $query = "SELECT src, dest, transactionType, balanceChange, memo, created from Transaction_History ";
+    $params = null;
+
+    $query .= " WHERE src = :src_id";
+    $params =  [":src_id" => "$src_id"];
+
+    $query .= " ORDER BY created desc LIMIT 10";
     $db = getDB();
-    $s = $db->prepare($q);
+    $stmt = $db->prepare($query);
     global $transactions; $transactions = [];
+
     try {
-        $s->execute($p);
-        $r = $s->fetchAll(PDO::FETCH_ASSOC);
-        if ($r) {
-            $transactions = $r;
+        $stmt->execute($params);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($results) {
+            $transactions = $results;
         } else {
-            flash("No matches found", "warning");
+            flash("No transactions found", "warning");
         }
     } catch (PDOException $e) {
         flash(var_export($e->errorInfo, true), "danger");
-    }
-            
+    }     
 }
 ?>
 
@@ -100,8 +96,8 @@ function get_account_info($src_id)
 
 <div>
     <?php if (isset($_POST["account_id"])) : ?>
-        <?php get_account_info(se($_POST, "account_id", "", false));?>
-        <h3>Account <?php se($_POST, "account_number", "", false);?> Information</h3>
+        <?php get_account_info(se($_POST, "account_id"));?>
+        <h3>Account Information</h3>
         <table class="table">
             <thead>
                 <th>Account Number</th>
