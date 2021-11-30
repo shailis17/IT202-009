@@ -5,12 +5,12 @@
     }
 
     $uid = get_user_id();
-    $query = "SELECT account_number, account_type, balance, created from Accounts ";
+    $query = "SELECT account_number, account_type, balance, created, id from Accounts ";
     $params = null;
-    
+
     $query .= " WHERE user_id = :uid";
     $params =  [":uid" => "$uid"];
-    
+
     $query .= " ORDER BY created desc";
     $db = getDB();
     $stmt = $db->prepare($query);
