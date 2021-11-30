@@ -1,17 +1,15 @@
 <?php
 //note we need to go up 1 more directory
-require(__DIR__ . "/../../../partials/nav.php");
+require(__DIR__ . "/../../partials/nav.php");
 
-/*
-if (!has_role("Admin")) {
+if (!is_logged_in()) {
     flash("You don't have permission to view this page", "warning");
     die(header("Location: " . get_url("home.php")));
 }
-*/
 
 if (isset($_POST["checkings"]) && isset($_POST["deposit"])) 
 {
-    $account_type = "checkings";
+    $type = "checkings";
     $deposit = (int)se($_POST, "deposit", "", false);
     if ($deposit < 5) 
     {
@@ -22,15 +20,15 @@ if (isset($_POST["checkings"]) && isset($_POST["deposit"]))
         try 
         {
             $db = getDB();
-            $stmt = $db->prepare("INSERT INTO Accounts (account_number, user_id, balance, account_type) VALUES(:an, :uid, :deposit, :account_type)");
+            $stmt = $db->prepare("INSERT INTO Accounts (account_number, user_id, balance, account_type) VALUES(:an, :uid, :deposit, :type)");
             $uid = get_user_id(); //caching a reference
-            $account_id = $db->lastInsertId();
+            $account_id = $db->lastInsertId() + 1;
             $an = str_pad($account_id,12,"202", STR_PAD_LEFT);
-            change_balance($deposit, "deposit", -1, get_user_account_id(), "opening balance");
+            change_balance($deposit, "deposit", -1, $account_id, "opening balance");
             refresh_account_balance();
 
             try {
-                $stmt->execute([":an" => $an, ":uid" => $uid, ":account_type" => $account_type]);
+                $stmt->execute([":an" => $an, ":uid" => $uid, ":type" => $type, ":deposit" => $deposit]);
                 flash("Successfully created account!", "success");
             } 
             catch (PDOException $e) {
@@ -50,9 +48,7 @@ if (isset($_POST["checkings"]) && isset($_POST["deposit"]))
         }
     }
 }
-if (!isset($_POST["checkings"]))
-    flash("Account type must be selected", "warning");
-if (!isset($_POST["deposit"]))
+else
     flash("Account type must be selected", "warning");
 ?>
 
@@ -74,6 +70,5 @@ if (!isset($_POST["deposit"]))
     </form>
 </div>
 <?php
-//note we need to go up 1 more directory
-require_once(__DIR__ . "/../../../partials/flash.php");
+require_once(__DIR__ . "/../../partials/flash.php");
 ?>
