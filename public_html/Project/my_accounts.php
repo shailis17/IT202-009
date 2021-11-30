@@ -8,7 +8,7 @@ if (!is_logged_in()) {
 }
 
 $uid = get_user_id();
-$query = "SELECT account_number, account_type, balance, created from Accounts ";
+$query = "SELECT account_number, account_type, balance, created, id from Accounts ";
 $params = null;
 
 $query .= " WHERE user_id = :uid";
@@ -30,8 +30,9 @@ try {
     flash(var_export($e->errorInfo, true), "danger");
 }
 
-function get_account_info($src_id)
+if (isset($_POST["account_id"]))
 {
+    $src_id = (int)se($_POST, "account_id", "", false) -1;
     $query = "SELECT src, dest, transactionType, balanceChange, memo, created from Transaction_History ";
     $params = null;
 
@@ -96,7 +97,6 @@ function get_account_info($src_id)
 
 <div>
     <?php if (isset($_POST["account_id"])) : ?>
-        <?php get_account_info(se($_POST, "account_id"));?>
         <h3>Account Information</h3>
         <table class="table">
             <thead>
