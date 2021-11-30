@@ -30,7 +30,7 @@
     if (isset($_POST["account_id"]) && isset($_POST["deposit"])) 
     {
         $deposit = (int)se($_POST, "deposit", "", false);
-        $aid = $_POST["account_id"];
+        $aid = (int)se($_POST, "account_id", "", false)+1;
         $memo = $_POST["memo"];
         if (!($deposit > 0))
         {
