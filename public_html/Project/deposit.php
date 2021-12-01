@@ -36,6 +36,8 @@
     {
         $deposit = (int)se($_POST, "deposit", "", false);
         $aid = se($_POST, "account_id", "", false);
+        $wid = get_world_id();
+        //flash("world id = $wid");
         $memo = $_POST["memo"];
         if (!($deposit > 0))
         {
@@ -43,9 +45,10 @@
         }
         else
         {
-            change_balance($deposit, "deposit",$aid, -1, $aid, $memo);
+            change_balance($deposit, "deposit",$aid, $wid, $aid, $memo);
             refresh_account_balance($aid);
             flash("Deposit was successful", "success");
+            die(header("Location: " . get_url("my_accounts.php")));
         }
     }
     else
