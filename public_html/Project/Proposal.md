@@ -272,7 +272,6 @@
                             - User_id must be the id of the system user
                             - Account type must be “world”
 
-
     - [X] (11/22/2021) Create the Transactions table
         -  List of Evidence of Feature Completion
             - Status: Completed
