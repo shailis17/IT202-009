@@ -394,24 +394,98 @@
                 - Link #2: https://sss8-prod.herokuapp.com/Project/withdraw.php
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/62
+                - PR link #2: https://github.com/shailis17/IT202-009/pull/65
             - Screenshots
-            - Screenshot #1-5
-                - ![image](https://user-images.githubusercontent.com/83250817/144166128-bdc4f6b3-466c-418d-806c-6d5a4ba21baa.png)
+                - Screenshot #1-5
+                    - ![image](https://user-images.githubusercontent.com/83250817/144166128-bdc4f6b3-466c-418d-806c-6d5a4ba21baa.png)
 
-                ![image](https://user-images.githubusercontent.com/83250817/144166431-4325608b-ba49-411b-a226-c2d3048138e2.png)
+                    ![image](https://user-images.githubusercontent.com/83250817/144166431-4325608b-ba49-411b-a226-c2d3048138e2.png)
 
-                ![image](https://user-images.githubusercontent.com/83250817/144166693-73bf2e51-4a9e-4a11-902c-ff013551a711.png)
+                    ![image](https://user-images.githubusercontent.com/83250817/144166693-73bf2e51-4a9e-4a11-902c-ff013551a711.png)
 
-                ![image](https://user-images.githubusercontent.com/83250817/144166834-774ac713-32a2-4d12-9b7b-b3b75940b9f2.png)
+                    ![image](https://user-images.githubusercontent.com/83250817/144166834-774ac713-32a2-4d12-9b7b-b3b75940b9f2.png)
 
-                ![image](https://user-images.githubusercontent.com/83250817/144169075-36391475-08da-4495-8a75-06ffdfef0eef.png)
+                    ![image](https://user-images.githubusercontent.com/83250817/144169075-36391475-08da-4495-8a75-06ffdfef0eef.png)
 
 
-                    - Form should have a dropdown of users accounts to pick from
-                        - World account should not be in the dropdown
-                    - Form should have a field to enter a positive numeric value
-                    - For withdraw, add a check to make sure they can’t withdraw more money than the account has
-                    - Form should allow the user to record a memo for the transaction
+                        - Form should have a dropdown of users accounts to pick from
+                            - World account should not be in the dropdown
+                        - Form should have a field to enter a positive numeric value
+                        - For withdraw, add a check to make sure they can’t withdraw more money than the account has
+                        - Form should allow the user to record a memo for the transaction
+
+                - Screenshot 6-7:
+                ![image](https://user-images.githubusercontent.com/83250817/144305017-63060c2c-5396-45bd-8bb9-564d94dfce02.png)
+
+                ![image](https://user-images.githubusercontent.com/83250817/144305082-6745100a-e83f-4090-80ff-9c792e7141bd.png)
+
+                    - Success message and redirects back to my_accounts.php
+
+                - Code Snippet from functions.php:
+                `function get_account_balance($aid)
+                {
+                    $query = "SELECT balance, id from Accounts ";
+                    $params = null;
+
+                    $query .= " WHERE id = :aid";
+                    $params =  [":aid" => "$aid"];
+
+                    $query .= " ORDER BY created desc";
+                    $db = getDB();
+
+                    $stmt = $db->prepare($query);
+                    $accounts = [];
+                    try {
+                        $stmt->execute($params);
+                        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        if ($results) {
+                            $accounts = $results;
+                            //echo var_export($accounts, true); 
+                        } else {
+                            flash("No accounts found", "warning");
+                        }
+                    } catch (PDOException $e) {
+                        flash(var_export($e->errorInfo, true), "danger");
+                    }
+
+                    $account = $accounts[0];
+                    $balance = (int)se($account, "balance","", false);
+                    return $balance;
+                }
+
+                function get_world_id($type = "world")
+                {
+                    $query = "SELECT account_type, id from Accounts ";
+                    $params = null;
+
+                    $query .= " WHERE account_type = :type";
+                    $params =  [":type" => "$type"];
+
+                    $query .= " ORDER BY created desc";
+                    $db = getDB();
+
+                    $stmt = $db->prepare($query);
+                    $accounts = [];
+                    try {
+                        $stmt->execute($params);
+                        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        if ($results) {
+                            $accounts = $results;
+                            //echo var_export($accounts, true); 
+                        } else {
+                            flash("No accounts found", "warning");
+                        }
+                    } catch (PDOException $e) {
+                        flash(var_export($e->errorInfo, true), "danger");
+                    }
+
+                    $account = $accounts[0];
+                    $world_id = (int)se($account, "id", "", false);
+                    return $world_id;
+                }
+                `
+                    - Used to check for sufficent withdrawal funds and fetch world account id 
+
 - Milestone 3
 - Milestone 4
 ### Intructions
