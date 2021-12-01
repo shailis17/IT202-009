@@ -36,6 +36,7 @@
     {
         $withdraw = (int)se($_POST, "withdraw", "", false);
         $aid = se($_POST, "account_id", "", false);
+        $wid = get_world_id();
         $memo = $_POST["memo"];
         $balance = get_account_balance($aid);
         //flash("balance = $balance");
@@ -49,7 +50,7 @@
         }
         else
         {
-            change_balance($withdraw, "withdraw",$aid, $aid, -1, $memo);
+            change_balance($withdraw, "withdraw",$aid, $aid, $wid, $memo);
             refresh_account_balance($aid);
             flash("Withdraw was successful", "success");
             die(header("Location: " . get_url("my_accounts.php")));

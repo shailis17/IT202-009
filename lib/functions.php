@@ -207,13 +207,13 @@ function get_account_balance($aid)
     return $balance;
 }
 
-function get_world_id()
+function get_world_id($type = "world")
 {
     $query = "SELECT account_type, id from Accounts ";
     $params = null;
 
-    $query .= " WHERE account_type = 'world'";
-    $params =  [":account_type" => "account_type"];
+    $query .= " WHERE account_type = :type";
+    $params =  [":type" => "$type"];
 
     $query .= " ORDER BY created desc";
     $db = getDB();
@@ -225,7 +225,7 @@ function get_world_id()
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if ($results) {
             $accounts = $results;
-            echo var_export($accounts, true); 
+            //echo var_export($accounts, true); 
         } else {
             flash("No accounts found", "warning");
         }
@@ -233,8 +233,8 @@ function get_world_id()
         flash(var_export($e->errorInfo, true), "danger");
     }
 
-    //$account = $accounts[0];
-    $world_id = (int)se($accounts, "id","", false);
+    $account = $accounts[0];
+    $world_id = (int)se($account, "id", "", false);
     return $world_id;
 }
 
