@@ -167,4 +167,86 @@ function get_url($dest)
     return $BASE_PATH . $dest;
 }
 
+//transactions and account management helper functions
+function get_user_account_id()
+{
+    if (is_logged_in() && isset($_SESSION["user"]["account"])) {
+        return se($_SESSION["user"]["account"], "id", 0, false);
+    }
+    return 0;
+}
+
+function get_account_balance($aid)
+{
+    $query = "SELECT balance from Accounts WHERE id = :aid";
+    $db = getDB();
+    $stmt = $db->prepare($query);
+    try {
+        $stmt->execute([":aid" => $aid]);
+        $balance = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+        return $balance;
+    } catch (PDOException $e) {
+        flash("Error refreshing account: " . var_export($e->errorInfo, true), "danger");
+    }
+    return 0;
+}
+
+function refresh_account_balance($src_id)
+{
+    
+    //cache account balance via Transaction_History history
+    $query = "UPDATE Accounts set balance = (SELECT IFNULL(SUM(balanceChange), 0) from Transaction_History WHERE src = :src) where id = :src";
+    $db = getDB();
+    $stmt = $db->prepare($query);
+    try {
+        $stmt->execute([":src" => $src_id]);
+    } catch (PDOException $e) {
+        flash("Error refreshing account: " . var_export($e->errorInfo, true), "danger");
+    }
+}
+
+/**
+ * balanceChange should be passed as a positive value.
+ * $src should be where the balanceChange is coming from
+ * $dest should be where the balanceChange is going
+ */
+function change_balance($balanceChange, $transactionType, $aid, $src = -1, $dest = -1, $memo = "")
+{
+    //I'm choosing to ignore the record of 0 point transactions
+    if ($balanceChange > 0) 
+    {
+        $query = "INSERT INTO Transaction_History (src, dest, balanceChange, transactionType, memo) 
+            VALUES (:acs, :acd, :pc, :r,:m), 
+            (:acs2, :acd2, :pc2, :r, :m)";
+        //insert both records at once, note the placeholders kept the same and the ones changed.
+        $params[":acs"] = $src;
+        $params[":acd"] = $dest;
+        $params[":r"] = $transactionType;
+        $params[":m"] = $memo;
+        $params[":pc"] = ($balanceChange * -1); //src account is giving away money
+
+        $params[":acs2"] = $dest;
+        $params[":acd2"] = $src;
+        $params[":pc2"] = $balanceChange;   //dest account is recieving money
+        $db = getDB();
+        $stmt = $db->prepare($query);
+        try 
+        {
+            $stmt->execute($params);
+            //Only refresh the balance of the user if the logged in user's account is part of the transfer
+            //this is needed so future features don't waste time/resources or potentially cause an error when a calculation
+            //occurs without a logged in user
+            if ($src == $aid|| $dest == $aid) 
+            {
+                refresh_account_balance($aid);
+            }
+        } 
+        catch (PDOException $e) 
+        {
+            flash("Transfer error occurred: " . var_export($e->errorInfo, true), "danger");
+        }
+    }
+}
+?>
+
 ?>

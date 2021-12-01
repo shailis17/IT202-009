@@ -65,19 +65,19 @@ if (isset($_POST["username"])) {
         flash("Username must not be empty", "warning");
     }
 }
-
-
 ?>
-<h1>Assign Roles</h1>
-<form method="POST">
-    <input type="search" name="username" placeholder="Username search" />
-    <input type="submit" value="Search" />
-</form>
+
+<div class="container-fluid">
+    <h2>Assign Roles</h2>
+    <form method="POST">
+        <input type="search" name="username" placeholder="Username search" />
+        <input type="submit" value="Search" />
+    </form>
 <form method="POST">
     <?php if (isset($username) && !empty($username)) : ?>
         <input type="hidden" name="username" value="<?php se($username, false); ?>" />
     <?php endif; ?>
-    <table>
+    <table class="table">
         <thead>
             <th>Users</th>
             <th>Roles to Assign</th>
