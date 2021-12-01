@@ -32,7 +32,7 @@ try {
 
 if (isset($_POST["account_id"]))
 {
-    $src_id = (int)se($_POST, "account_id", "", false) -1;
+    $src_id = (int)se($_POST, "account_id", "", false);
     $query = "SELECT src, dest, transactionType, balanceChange, memo, created from Transaction_History ";
     $params = null;
 

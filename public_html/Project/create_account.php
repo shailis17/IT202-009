@@ -50,8 +50,8 @@ if (isset($_POST["checkings"]) && isset($_POST["deposit"]))
         }
 
         $aid = $account_id + 1;
-        change_balance($deposit, "deposit", -1, $aid, "opening balance");
-        refresh_account_balance();
+        change_balance($deposit, "deposit", $aid, -1, $aid, "opening balance");
+        refresh_account_balance($aid);
     }
 }
 else

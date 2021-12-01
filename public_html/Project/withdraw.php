@@ -5,14 +5,16 @@
     }
 
     $uid = get_user_id();
-    $query = "SELECT account_number, account_type, balance, created from Accounts ";
+    $query = "SELECT account_number, account_type, balance, created, id from Accounts ";
     $params = null;
-    
+
     $query .= " WHERE user_id = :uid";
     $params =  [":uid" => "$uid"];
-    
+
     $query .= " ORDER BY created desc";
     $db = getDB();
+    error_log("user_id: $uid");
+    error_log("query: $query");
     $stmt = $db->prepare($query);
     $accounts = [];
     try {
@@ -20,6 +22,7 @@
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if ($results) {
             $accounts = $results;
+            //echo var_export($accounts, true); 
         } else {
             flash("No accounts found", "warning");
         }
@@ -30,21 +33,21 @@
     if (isset($_POST["account_id"]) && isset($_POST["withdraw"])) 
     {
         $withdraw = (int)se($_POST, "withdraw", "", false);
-        $aid = $_POST["account_id"];
+        $aid = se($_POST, "account_id", "", false);
         $memo = $_POST["memo"];
         if (!($withdraw > 0))
         {
             flash("Input a value to withdraw", "warning");
         }
-        elseif ($withdraw > (int)se($_POST, "account_balance", "", false))
+        elseif ($withdraw > get_account_balance($aid))
         {
             flash("Insufficient Funds", "warning");
         }
         else
         {
-            change_balance($withdraw, "withdraw", $aid, -1, $memo);
-            refresh_account_balance();
-            flash("withdraw was successful", "success");
+            change_balance($withdraw, "withdraw",$aid, $aid, -1, $memo);
+            refresh_account_balance($aid);
+            flash("Withdraw was successful", "success");
         }
     }
     else
@@ -57,15 +60,13 @@
         <form method="POST">
             <div class="mb-3">
                 <label for="accountList" class="form-label">Choose an Account to Withdraw Money To</label>
-                <input class="form-select" list="accountListOptions" id="accountList" placeholder="Type to search...">
+                <select class="form-select" name="account_id" id="accountList" autocomplete="off">
                 <?php if (!empty($accounts)) : ?>
-                    <datalist id="accountListOptions">
-                        <?php foreach ($accounts as $account) : ?>
-                            <option value= "<?php se($account, "account_number"); ?> (Type: <?php se($account, 'account_type'); ?>; Balance = $<?php se($account, "balance"); ?>)">
-                            <input type="hidden" name="account_id" value="<?php se($account, 'id'); ?>" />
-                            <input type="hidden" name="account_balance" value="<?php se($account, 'balance'); ?>" />
-                        <?php endforeach; ?>
-                    </datalist>
+                    <?php foreach ($accounts as $account) : ?>
+                        <option value="<?php se($account, 'id'); ?>">
+                            <?php se($account, "account_number"); ?> (Type: <?php se($account, 'account_type'); ?>; Balance = $<?php se($account, "balance"); ?>)
+                        </option>
+                    <?php endforeach; ?>
                 <?php endif; ?> 
             </div>
             <div class="mb-3">

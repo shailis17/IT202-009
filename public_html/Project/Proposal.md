@@ -244,75 +244,76 @@
                     - Changing username/email should properly check to see if it’s available before allowing the change
 
 - Milestone 2
-    - [ ] (mm/dd/yyyy of completion) Create the Accounts table
+    - [X] (11/18/2021) Create the Accounts table
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Completed
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/55
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                    - Screenshot #1 description explaining what you're trying to show
     
-    - [ ] (mm/dd/yyyy of completion) Initial setup scripts in sql folder
+    - [X] (11/18/2021) Initial setup scripts in sql folder
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Completed
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/55
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                    - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                        - Screenshot #1 description explaining what you're trying to show
 
-    - [ ] (mm/dd/yyyy of completion) Create the Transactions table
+    - [X] (11/22/2021) Create the Transactions table
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Completed
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/56
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                    - Screenshot #1 description explaining what you're trying to show
 
-    - [ ] (mm/dd/yyyy of completion) Dashboard page
+    - [X] (11/27/2021) Dashboard page
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Completed
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/57
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                    - Screenshot #1 description explaining what you're trying to show
 
-    - [ ] (mm/dd/yyyy of completion) User will be able to create a checking account
+    - [X] (11/29/2021) User will be able to create a checking account
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Completed
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/60
+                - PR link #2: https://github.com/shailis17/IT202-009/pull/61
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                    - Screenshot #1 description explaining what you're trying to show
 
-    - [ ] (mm/dd/yyyy of completion) User will be able to list their accounts
+    - [X] (11/29/2021) User will be able to list their accounts
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Completed
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/61
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                    - Screenshot #1 description explaining what you're trying to show
 
-    - [ ] (mm/dd/yyyy of completion) User will be able to click an account for more information (aka Transaction History page)
+    - [X] (11/30/2021) User will be able to click an account for more information (aka Transaction History page)
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Completed
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/61
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                    - Screenshot #1 description explaining what you're trying to show
 
     - [ ] (mm/dd/yyyy of completion) User will be able to deposit/withdraw from their account(s)
         -  List of Evidence of Feature Completion

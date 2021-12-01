@@ -1,7 +1,9 @@
 <?php
-    require_once(__DIR__ . "/../../partials/nav.php");
+    require(__DIR__ . "/../../partials/nav.php");
+
     if (!is_logged_in()) {
-        die(header("Location: login.php"));
+        flash("You don't have permission to view this page", "warning");
+        die(header("Location: " . get_url("home.php")));
     }
 
     $uid = get_user_id();
@@ -13,6 +15,8 @@
 
     $query .= " ORDER BY created desc";
     $db = getDB();
+    error_log("user_id: $uid");
+    error_log("query: $query");
     $stmt = $db->prepare($query);
     $accounts = [];
     try {
@@ -20,6 +24,7 @@
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if ($results) {
             $accounts = $results;
+            //echo var_export($accounts, true); 
         } else {
             flash("No accounts found", "warning");
         }
@@ -30,7 +35,7 @@
     if (isset($_POST["account_id"]) && isset($_POST["deposit"])) 
     {
         $deposit = (int)se($_POST, "deposit", "", false);
-        $aid = (int)se($_POST, "account_id", "", false)+1;
+        $aid = se($_POST, "account_id", "", false);
         $memo = $_POST["memo"];
         if (!($deposit > 0))
         {
@@ -38,8 +43,8 @@
         }
         else
         {
-            change_balance($deposit, "deposit", -1, $aid, $memo);
-            refresh_account_balance();
+            change_balance($deposit, "deposit",$aid, -1, $aid, $memo);
+            refresh_account_balance($aid);
             flash("Deposit was successful", "success");
         }
     }
@@ -53,14 +58,13 @@
         <form method="POST">
             <div class="mb-3">
                 <label for="accountList" class="form-label">Choose an Account to Deposit Money To</label>
-                <input class="form-select" list="accountListOptions" id="accountList" placeholder="Type to search...">
+                <select class="form-select" name="account_id" id="accountList" autocomplete="off">
                 <?php if (!empty($accounts)) : ?>
-                    <datalist id="accountListOptions">
-                        <?php foreach ($accounts as $account) : ?>
-                            <option value= "<?php se($account, "account_number"); ?> (Type: <?php se($account, 'account_type'); ?>; Balance = $<?php se($account, "balance"); ?>)">
-                            <input type="hidden" name="account_id" value="<?php se($account, 'id'); ?>" />
-                        <?php endforeach; ?>
-                    </datalist>
+                    <?php foreach ($accounts as $account) : ?>
+                        <option value="<?php se($account, 'id'); ?>">
+                            <?php se($account, "account_number"); ?> (Type: <?php se($account, 'account_type'); ?>; Balance = $<?php se($account, "balance"); ?>)
+                        </option>
+                    <?php endforeach; ?>
                 <?php endif; ?> 
             </div>
             <div class="mb-3">
