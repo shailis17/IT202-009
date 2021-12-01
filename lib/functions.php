@@ -176,26 +176,32 @@ function get_user_account_id()
     return 0;
 }
 
-function get_account_balance()
+function get_account_balance($aid)
 {
-    if (is_logged_in() && isset($_SESSION["user"]["account"])) {
-        return (int)se($_SESSION["user"]["account"], "balance", 0, false);
+    $query = "SELECT balance from Accounts WHERE id = :aid";
+    $db = getDB();
+    $stmt = $db->prepare($query);
+    try {
+        $stmt->execute([":aid" => $aid]);
+        $balance = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+        return $balance;
+    } catch (PDOException $e) {
+        flash("Error refreshing account: " . var_export($e->errorInfo, true), "danger");
     }
     return 0;
 }
 
-function refresh_account_balance()
+function refresh_account_balance($src_id)
 {
-    if (is_logged_in()) {
-        //cache account balance via Transaction_History history
-        $query = "UPDATE Accounts set balance = (SELECT IFNULL(SUM(balanceChange), 0) from Transaction_History WHERE src = :src) where id = :src";
-        $db = getDB();
-        $stmt = $db->prepare($query);
-        try {
-            $stmt->execute([":src" => get_user_account_id()]);
-        } catch (PDOException $e) {
-            flash("Error refreshing account: " . var_export($e->errorInfo, true), "danger");
-        }
+    
+    //cache account balance via Transaction_History history
+    $query = "UPDATE Accounts set balance = (SELECT IFNULL(SUM(balanceChange), 0) from Transaction_History WHERE src = :src) where id = :src";
+    $db = getDB();
+    $stmt = $db->prepare($query);
+    try {
+        $stmt->execute([":src" => $src_id]);
+    } catch (PDOException $e) {
+        flash("Error refreshing account: " . var_export($e->errorInfo, true), "danger");
     }
 }
 
@@ -204,7 +210,7 @@ function refresh_account_balance()
  * $src should be where the balanceChange is coming from
  * $dest should be where the balanceChange is going
  */
-function change_balance($balanceChange, $transactionType, $src = -1, $dest = -1, $memo = "")
+function change_balance($balanceChange, $transactionType, $aid, $src = -1, $dest = -1, $memo = "")
 {
     //I'm choosing to ignore the record of 0 point transactions
     if ($balanceChange > 0) 
@@ -230,9 +236,9 @@ function change_balance($balanceChange, $transactionType, $src = -1, $dest = -1,
             //Only refresh the balance of the user if the logged in user's account is part of the transfer
             //this is needed so future features don't waste time/resources or potentially cause an error when a calculation
             //occurs without a logged in user
-            if ($src == get_user_account_id() || $dest == get_user_account_id()) 
+            if ($src == $aid|| $dest == $aid) 
             {
-                refresh_account_balance();
+                refresh_account_balance($aid);
             }
         } 
         catch (PDOException $e) 
