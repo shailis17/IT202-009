@@ -39,7 +39,7 @@
         $memo = $_POST["memo"];
         if (!($deposit > 0))
         {
-            flash("Input a value to deposit", "warning");
+            flash("Input a value to deposit (Greater than 0)", "warning");
         }
         else
         {

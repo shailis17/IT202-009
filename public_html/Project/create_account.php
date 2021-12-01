@@ -52,6 +52,7 @@ if (isset($_POST["checkings"]) && isset($_POST["deposit"]))
         $aid = $account_id + 1;
         change_balance($deposit, "deposit", $aid, -1, $aid, "opening balance");
         refresh_account_balance($aid);
+        die(header("Location: " . get_url("my_accounts.php")));
     }
 }
 else

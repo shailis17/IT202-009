@@ -1,7 +1,9 @@
 <?php
-    require_once(__DIR__ . "/../../partials/nav.php");
+    require(__DIR__ . "/../../partials/nav.php");
+
     if (!is_logged_in()) {
-        die(header("Location: login.php"));
+        flash("You don't have permission to view this page", "warning");
+        die(header("Location: " . get_url("home.php")));
     }
 
     $uid = get_user_id();
@@ -37,12 +39,10 @@
         $memo = $_POST["memo"];
         if (!($withdraw > 0))
         {
-            flash("Input a value to withdraw", "warning");
+            flash("Input a value to withdraw (Greater than 0)", "warning");
         }
-        elseif ($withdraw > get_account_balance($aid))
-        {
+        if($withdraw > get_account_balance($aid))
             flash("Insufficient Funds", "warning");
-        }
         else
         {
             change_balance($withdraw, "withdraw",$aid, $aid, -1, $memo);
