@@ -388,7 +388,7 @@
 
     - [X] (11/30/2021) User will be able to deposit/withdraw from their account(s)
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
+            - Status: Completed
             - Direct Links: 
                 - Link #1: https://sss8-prod.herokuapp.com/Project/deposit.php
                 - Link #2: https://sss8-prod.herokuapp.com/Project/withdraw.php
