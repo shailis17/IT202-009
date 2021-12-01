@@ -46,6 +46,7 @@
             change_balance($deposit, "deposit",$aid, -1, $aid, $memo);
             refresh_account_balance($aid);
             flash("Deposit was successful", "success");
+            die(header("Location: " . get_url("my_accounts.php")));
         }
     }
     else

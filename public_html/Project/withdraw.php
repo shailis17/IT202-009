@@ -37,17 +37,22 @@
         $withdraw = (int)se($_POST, "withdraw", "", false);
         $aid = se($_POST, "account_id", "", false);
         $memo = $_POST["memo"];
+        $balance = get_account_balance($aid);
+        //flash("balance = $balance");
         if (!($withdraw > 0))
         {
             flash("Input a value to withdraw (Greater than 0)", "warning");
         }
-        if($withdraw > get_account_balance($aid))
+        else if($withdraw > get_account_balance($aid))
+        {
             flash("Insufficient Funds", "warning");
+        }
         else
         {
             change_balance($withdraw, "withdraw",$aid, $aid, -1, $memo);
             refresh_account_balance($aid);
             flash("Withdraw was successful", "success");
+            die(header("Location: " . get_url("my_accounts.php")));
         }
     }
     else

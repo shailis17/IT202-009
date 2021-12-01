@@ -178,17 +178,64 @@ function get_user_account_id()
 
 function get_account_balance($aid)
 {
-    $query = "SELECT balance from Accounts WHERE id = :aid";
+    $query = "SELECT balance, id from Accounts ";
+    $params = null;
+
+    $query .= " WHERE id = :aid";
+    $params =  [":aid" => "$aid"];
+
+    $query .= " ORDER BY created desc";
     $db = getDB();
+
     $stmt = $db->prepare($query);
+    $accounts = [];
     try {
-        $stmt->execute([":aid" => $aid]);
-        $balance = $stmt->fetchAll(PDO::FETCH_ASSOC); 
-        return $balance;
+        $stmt->execute($params);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($results) {
+            $accounts = $results;
+            //echo var_export($accounts, true); 
+        } else {
+            flash("No accounts found", "warning");
+        }
     } catch (PDOException $e) {
-        flash("Error refreshing account: " . var_export($e->errorInfo, true), "danger");
+        flash(var_export($e->errorInfo, true), "danger");
     }
-    return 0;
+
+    $account = $accounts[0];
+    $balance = (int)se($account, "balance","", false);
+    return $balance;
+}
+
+function get_world_id()
+{
+    $query = "SELECT account_type, id from Accounts ";
+    $params = null;
+
+    $query .= " WHERE account_type = 'world'";
+    $params =  [":account_type" => "account_type"];
+
+    $query .= " ORDER BY created desc";
+    $db = getDB();
+
+    $stmt = $db->prepare($query);
+    $accounts = [];
+    try {
+        $stmt->execute($params);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($results) {
+            $accounts = $results;
+            echo var_export($accounts, true); 
+        } else {
+            flash("No accounts found", "warning");
+        }
+    } catch (PDOException $e) {
+        flash(var_export($e->errorInfo, true), "danger");
+    }
+
+    //$account = $accounts[0];
+    $world_id = (int)se($accounts, "id","", false);
+    return $world_id;
 }
 
 function refresh_account_balance($src_id)
