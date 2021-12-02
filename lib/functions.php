@@ -295,5 +295,3 @@ function change_balance($balanceChange, $transactionType, $aid, $src = -1, $dest
     }
 }
 ?>
-
-?>
