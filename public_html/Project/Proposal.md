@@ -244,6 +244,248 @@
                     - Changing username/email should properly check to see if it’s available before allowing the change
 
 - Milestone 2
+    - [X] (11/18/2021) Create the Accounts table
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/my_accounts.php
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/55
+            - Screenshots & Evidence
+                - see Project/sql folder
+                    - file 006_create_table_accounts
+                        - Create the Accounts table ==> id, account_number [unique, always 12 characters], user_id, balance (default 0), account_type, created, modified)
+
+    
+    - [X] (11/18/2021) Initial setup scripts in sql folder
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/my_accounts.php
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/55
+            - Screenshots & Evidence
+                - see Project/sql folder
+                    - file 007_insert_table_users_system
+                        - Create a system user if they don’t exist (this will never be logged into, it’s just to keep things working per system requirements)
+                    - file 008_insert_table_accounts_world
+                        - Create a world account in the Accounts table created below (if it doesn’t exist)
+                            - Account_number must be “000000000000”
+                            - User_id must be the id of the system user
+                            - Account type must be “world”
+
+    - [X] (11/22/2021) Create the Transactions table
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/my_accounts.php
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/56
+            - Screenshots & Evidence
+                - see Project/sql folder
+                    - file 009_create_table_transactionhistory
+
+    - [X] (11/27/2021) Dashboard page
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/home.php
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/57
+            - Screenshots
+                - Screenshot #1 
+                
+                ![image](https://user-images.githubusercontent.com/83250817/144163573-351b061f-b0cc-401a-82b1-8193e51efbb2.png)
+
+                    - Will have links for Create Account, My Accounts, Deposit, Withdraw Transfer, Profile
+                        - Links that don’t have pages yet should just have href=”#”, you’ll update them later
+
+
+    - [X] (11/29/2021) User will be able to create a checking account
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/create_account.php
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/60
+                - PR link #2: https://github.com/shailis17/IT202-009/pull/61
+                - PR link #3: https://github.com/shailis17/IT202-009/pull/62
+            - Screenshots & Evidence
+                - Screenshot #1 & #2
+                
+                ![image](https://user-images.githubusercontent.com/83250817/144164132-47b3f2a8-1714-48dc-a459-cb813e204010.png)
+
+                ![image](https://user-images.githubusercontent.com/83250817/144164012-86823fe7-c868-433f-b219-075fc1b07a15.png)
+
+                    - User will see user-friendly error messages when appropriate
+                    - User will see user-friendly success message when account is created successfully  
+                        - Redirect user to their Accounts page
+
+                - Code Snippet from create_account.php:
+                    - `$db = getDB();
+            $an = null;
+            $stmt = $db->prepare("INSERT INTO Accounts (account_number, user_id, balance, account_type) VALUES(:an, :uid, :deposit, :type)");
+            $uid = get_user_id(); //caching a reference
+
+            try {
+                $stmt->execute([":an" => $an, ":uid" => null, ":type" => null, ":deposit" => null]);
+                $account_id = $db->lastInsertId();
+                //flash("account_id = $account_id");
+                $an = str_pad($account_id+1,12,"202", STR_PAD_LEFT);
+                $stmt->execute([":an" => $an, ":uid" => $uid, ":type" => $type, ":deposit" => $deposit]);
+                
+                flash("Successfully created account!", "success");
+            } 
+            catch (PDOException $e) {
+                flash("An unexpected error occurred, please try again " . var_export($e->errorInfo, true), "danger");
+            }`
+                - System will generate a unique 12 digit account number ==> Generate the number based on the id column; requires inserting a null first to get the last insert id, then update the record immediately after
+
+
+    - [X] (11/29/2021) User will be able to list their accounts
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/my_accounts.php
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/61
+                - PR link #2: https://github.com/shailis17/IT202-009/pull/62
+
+            - Screenshots & Evidence
+                - Screenshot #1
+                ![image](https://user-images.githubusercontent.com/83250817/144164609-272e893c-6e0f-45ca-a535-bef9f577049c.png)
+
+                    - Show account number, account type and balance
+                - code snippet from my_accounts.php
+                
+                `$uid = get_user_id();
+                $query = "SELECT account_number, account_type, balance, created, id from Accounts ";
+                $params = null;
+
+                $query .= " WHERE user_id = :uid";
+                $params =  [":uid" => "$uid"];
+
+                $query .= " ORDER BY created desc LIMIT 5";`
+                    - Limit results to 5 for now
+
+    - [X] (11/30/2021) User will be able to click an account for more information (aka Transaction History page)
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/my_accounts.php
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/61
+                - PR link #2: https://github.com/shailis17/IT202-009/pull/62
+
+            - Screenshots & Evidence
+                - Screenshot #1 
+                ![image](https://user-images.githubusercontent.com/83250817/144165429-bee13f4c-bdc4-4a53-bc11-8955ef684436.png)
+                    - Show account number, account type, balance, opened/created date
+                    - Show transaction history (from Transactions table)
+                - Code Snippet from my_accounts.php:
+                    `$src_id = (int)se($_POST, "account_id", "", false);
+                    $query = "SELECT src, dest, transactionType, balanceChange, memo, created from Transaction_History ";
+                    $params = null;
+
+                    $query .= " WHERE src = :src_id";
+                    $params =  [":src_id" => "$src_id"];
+
+                    $query .= " ORDER BY created desc LIMIT 10";`
+                    - For now limit results to 10 latest
+
+    - [X] (11/30/2021) User will be able to deposit/withdraw from their account(s)
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Links: 
+                - Link #1: https://sss8-prod.herokuapp.com/Project/deposit.php
+                - Link #2: https://sss8-prod.herokuapp.com/Project/withdraw.php
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/62
+                - PR link #2: https://github.com/shailis17/IT202-009/pull/65
+            - Screenshots
+                - Screenshot #1-5
+                    - ![image](https://user-images.githubusercontent.com/83250817/144166128-bdc4f6b3-466c-418d-806c-6d5a4ba21baa.png)
+
+                    ![image](https://user-images.githubusercontent.com/83250817/144166431-4325608b-ba49-411b-a226-c2d3048138e2.png)
+
+                    ![image](https://user-images.githubusercontent.com/83250817/144166693-73bf2e51-4a9e-4a11-902c-ff013551a711.png)
+
+                    ![image](https://user-images.githubusercontent.com/83250817/144166834-774ac713-32a2-4d12-9b7b-b3b75940b9f2.png)
+
+                    ![image](https://user-images.githubusercontent.com/83250817/144169075-36391475-08da-4495-8a75-06ffdfef0eef.png)
+
+
+                        - Form should have a dropdown of users accounts to pick from
+                            - World account should not be in the dropdown
+                        - Form should have a field to enter a positive numeric value
+                        - For withdraw, add a check to make sure they can’t withdraw more money than the account has
+                        - Form should allow the user to record a memo for the transaction
+
+                - Screenshot 6-7:
+                ![image](https://user-images.githubusercontent.com/83250817/144305017-63060c2c-5396-45bd-8bb9-564d94dfce02.png)
+
+                ![image](https://user-images.githubusercontent.com/83250817/144305082-6745100a-e83f-4090-80ff-9c792e7141bd.png)
+
+                    - Success message and redirects back to my_accounts.php
+
+                - Code Snippet from functions.php:
+                `function get_account_balance($aid)
+                {
+                    $query = "SELECT balance, id from Accounts ";
+                    $params = null;
+
+                    $query .= " WHERE id = :aid";
+                    $params =  [":aid" => "$aid"];
+
+                    $query .= " ORDER BY created desc";
+                    $db = getDB();
+
+                    $stmt = $db->prepare($query);
+                    $accounts = [];
+                    try {
+                        $stmt->execute($params);
+                        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        if ($results) {
+                            $accounts = $results;
+                            //echo var_export($accounts, true); 
+                        } else {
+                            flash("No accounts found", "warning");
+                        }
+                    } catch (PDOException $e) {
+                        flash(var_export($e->errorInfo, true), "danger");
+                    }
+
+                    $account = $accounts[0];
+                    $balance = (int)se($account, "balance","", false);
+                    return $balance;
+                }
+
+                function get_world_id($type = "world")
+                {
+                    $query = "SELECT account_type, id from Accounts ";
+                    $params = null;
+
+                    $query .= " WHERE account_type = :type";
+                    $params =  [":type" => "$type"];
+
+                    $query .= " ORDER BY created desc";
+                    $db = getDB();
+
+                    $stmt = $db->prepare($query);
+                    $accounts = [];
+                    try {
+                        $stmt->execute($params);
+                        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        if ($results) {
+                            $accounts = $results;
+                            //echo var_export($accounts, true); 
+                        } else {
+                            flash("No accounts found", "warning");
+                        }
+                    } catch (PDOException $e) {
+                        flash(var_export($e->errorInfo, true), "danger");
+                    }
+
+                    $account = $accounts[0];
+                    $world_id = (int)se($account, "id", "", false);
+                    return $world_id;
+                }
+                `
+                    - Used to check for sufficent withdrawal funds and fetch world account id 
+
 - Milestone 3
     - [ ] (mm/dd/yyyy of completion) User will be able to transfer between their accounts
         -  List of Evidence of Feature Completion
