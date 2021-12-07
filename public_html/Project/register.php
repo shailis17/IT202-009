@@ -3,6 +3,9 @@ require(__DIR__ . "/../../partials/nav.php");
 reset_session();
 $email = se($_POST, "email", "", false);
 $username = se($_POST, "username", "", false);
+$firstname = se($_POST, "firstname", "", false);
+$lastname = se($_POST, "lastname", "", false);
+
 ?>
 
 <div class="container-fluid">
@@ -15,6 +18,14 @@ $username = se($_POST, "username", "", false);
         <div class="mb-3">
             <label class="form-label" for="username">Username</label>
             <input class="form-control" type="text" name="username" required maxlength="30" value="<?php se($username); ?>"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="firstname">First Name</label>
+            <input class="form-control" type="text" name="firstname" required maxlength="30" value="<?php se($firstname); ?>"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="lastname">Last Name</label>
+            <input class="form-control" type="text" name="lastname" required maxlength="30" value="<?php se($lastname); ?>"/>
         </div>
         <div class="mb-3">
             <label class="form-label" for="pw">Password</label>
@@ -44,6 +55,8 @@ $username = se($_POST, "username", "", false);
     $password = se($_POST, "password", "", false);
     $confirm = se($_POST, "confirm", "", false);
     $username = se($_POST, "username", "", false);
+    $firstname = se($_POST, "firstname", "", false);
+    $lastname = se($_POST, "lastname", "", false);
     //TODO 3: validate/use
     //$errors = [];
     $hasErrors = false;
@@ -67,6 +80,16 @@ $username = se($_POST, "username", "", false);
     if(!preg_match('/^[a-z0-9_-]{3,30}$/i', $username))
     {
         flash("Invalid username, must be alphanumeric and can only contain - and/or _", "danger");
+        $hasErrors = true;
+    }
+    if(empty($firstname))
+    {
+        flash("First Name must be set", "danger");
+        $hasErrors = true;
+    }
+    if(empty($lastname))
+    {
+        flash("Last Name must be set", "danger");
         $hasErrors = true;
     }
     if(empty($password))
@@ -107,10 +130,10 @@ $username = se($_POST, "username", "", false);
         //flash("Welcome, $email");
         $hash = password_hash($password, PASSWORD_BCRYPT);
         $db = getDB();
-        $stmt = $db->prepare("INSERT INTO Users(email, password, username) VALUES (:email, :password, :username)");
+        $stmt = $db->prepare("INSERT INTO Users(email, password, username, firstname, lastname) VALUES (:email, :password, :username, :firstname, :lastname)");
         try
         {
-            $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username]);
+            $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username, ":firstname" => $firstname, ":lastname" => $lastname]);
             //echo "You've been registered!";
             flash("You've been registered!", "success");
         }
