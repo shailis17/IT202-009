@@ -8,10 +8,13 @@ if (!is_logged_in()) {
 if (isset($_POST["save"])) {
     $email = se($_POST, "email", null, false);
     $username = se($_POST, "username", null, false);
+    $firstname = se($_POST, "firstname", null, false);
+    $lastname = se($_POST, "lastname", null, false);
 
-    $params = [":email" => $email, ":username" => $username, ":id" => get_user_id()];
+
+    $params = [":email" => $email, ":username" => $username, "firstname" => $firstname, "lastname" => $lastname, ":id" => get_user_id()];
     $db = getDB();
-    $stmt = $db->prepare("UPDATE Users set email = :email, username = :username where id = :id");
+    $stmt = $db->prepare("UPDATE Users set email = :email, username = :username, firstname = :firstname, lastname = :lastname where id = :id");
     try {
         $stmt->execute($params);
     } catch (Exception $e) {
@@ -23,16 +26,16 @@ if (isset($_POST["save"])) {
             } else {
                 //TODO come up with a nice error message
                 //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
-                flash("An unexpected error occurred, please try again", "danger");
+                flash("An unexpected error occurred, please try again" . var_export($e->errorInfo, true), "danger");
             }
         } else {
             //TODO come up with a nice error message
             //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
-            flash("An unexpected error occurred, please try again", "danger");
+            flash("An unexpected error occurred, please try again" . var_export($e->errorInfo, true), "danger");
         }
     }
     //select fresh data from table
-    $stmt = $db->prepare("SELECT id, email, IFNULL(username, email) as `username` from Users where id = :id LIMIT 1");
+    $stmt = $db->prepare("SELECT id, email, IFNULL(username, email) as `username`, firstname, lastname from Users where id = :id LIMIT 1");
     try {
         $stmt->execute([":id" => get_user_id()]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -40,11 +43,14 @@ if (isset($_POST["save"])) {
             //$_SESSION["user"] = $user;
             $_SESSION["user"]["email"] = $user["email"];
             $_SESSION["user"]["username"] = $user["username"];
+            $_SESSION["user"]["firstname"] = $user["firstname"];
+            $_SESSION["user"]["lastname"] = $user["lastname"];
+
         } else {
             flash("User doesn't exist", "danger");
         }
     } catch (Exception $e) {
-        flash("An unexpected error occurred, please try again", "danger");
+        flash("An unexpected error occurred, please try again" . var_export($e->errorInfo, true), "danger");
         //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
     }
 
@@ -76,7 +82,7 @@ if (isset($_POST["save"])) {
                 }
             } catch (Exception $e) {
                 //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
-                flash("An unexpected error occurred, please try again", "danger");
+                flash("An unexpected error occurred, please try again" . var_export($e->errorInfo, true), "danger");
             }
         } else {
             flash("New passwords don't match", "warning");
@@ -88,6 +94,8 @@ if (isset($_POST["save"])) {
 <?php
 $email = get_user_email();
 $username = get_username();
+$firstname = get_user_firstname();
+$lastname = get_user_lastname();
 ?>
 
 <div class="container-fluid">
@@ -100,6 +108,14 @@ $username = get_username();
         <div class="mb-3">
             <label class="form-label" for="username">Username</label>
             <input class="form-control" type="text" name="username" id="username" value="<?php se($username); ?>" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="firstname">First Name</label>
+            <input class="form-control" type="text" name="firstname" id="firstname" value="<?php se($firstname); ?>" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="lastname">Last Name</label>
+            <input class="form-control" type="text" name="lastname" id="lastname" value="<?php se($lastname); ?>" />
         </div>
         <!-- DO NOT PRELOAD PASSWORD -->
         <div class="mb-3"><h5>Password Reset</h5></div>
