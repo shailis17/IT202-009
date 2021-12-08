@@ -30,9 +30,89 @@ try {
     flash(var_export($e->errorInfo, true), "danger");
 }
 
-if (isset($_POST["account_id"]))
+if (isset($_REQUEST["account_id"]))
 {
-    $src_id = (int)se($_POST, "account_id", "", false);
+    $src_id = (int)se($_REQUEST, "account_id", "", false);
+    //Sorts & Filters
+    $startDate = se($_GET, "start", date("Y-m-d", strtotime("-1 month")), false);
+    $endDate = se($_GET, "end", date("Y-m-d"), false);
+    $type = se($_GET, "type", false, false);
+    $orderby = se($_GET, "orderby", false, false);
+    
+    //split query into data and total
+    $base_query = "SELECT src, dest, transactionType, balanceChange, memo, created from Transaction_History ";
+    $total_query = "SELECT count(1) as total FROM Transaction_History ";
+    //dynamic query
+    $query = " WHERE 1=1"; //1=1 shortcut to conditionally build AND clauses
+    $params = []; //define default params, add keys as needed and pass to execute
+    //apply src filter
+    $query .= " AND src = :src_id ";
+    $params =  [":src_id" => $src_id];
+
+    //apply start-end date filter
+    if ($startDate) 
+    {
+        $query .= " AND created >= :startDate ";
+        $params[":startDate"] = $startDate;
+    }
+    if ($endDate) 
+    {
+        $query .= " AND created <= :endDate ";
+        //offset the time to be 1 minute before end of day
+        //by default the time component is 00:00:00 which is the beginning if this day
+        //$params[":end"] = $end;
+        $params[":endDate"] = date("Y-m-d 23:59:59", strtotime($endDate));
+    }
+
+    //apply type filter
+    if (!empty($type)) {
+        $query .= " AND transactionType = :type ";
+        $params[":type"] = "$type";
+    }
+    //apply column and order sort
+    if (!empty($orderby))
+    {
+        $query .= " ORDER BY created $orderby ";
+    }
+    else
+    {
+        $query .= " ORDER BY created desc ";
+    }
+    //paginate function
+    $per_page = 10;
+    paginate($total_query . $query, $params, $per_page);
+    $query .= " LIMIT :offset, :count";
+    $params[":offset"] = $offset;
+    $params[":count"] = $per_page;
+
+    $db = getDB();
+    $transactions = [];
+
+    //get the records
+    $stmt = $db->prepare($base_query . $query); //dynamically generated query
+    //we'll want to convert this to use bindValue so ensure they're integers so lets map our array
+    foreach ($params as $key => $value) {
+        $t = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+        $stmt->bindValue($key, $value, $t);
+    }
+    $params = null; //set it to null to avoid issues
+    
+    try {
+        $stmt->execute($params); //dynamically populated params to bind
+        $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($r) {
+            $transactions = $r;
+        }
+        else {
+            flash("No transactions found", "warning");
+        }
+    } 
+    catch (PDOException $e) {
+        flash(var_export($e->errorInfo, true), "danger");
+    }
+    
+    //SHOWS 10 LATEST TRANSACTIONS ORDERED BY CREATED NEW TO OLD ==> per Milestone2
+    /*
     $query = "SELECT src, dest, transactionType, balanceChange, memo, created from Transaction_History ";
     $params = null;
 
@@ -54,7 +134,8 @@ if (isset($_POST["account_id"]))
         }
     } catch (PDOException $e) {
         flash(var_export($e->errorInfo, true), "danger");
-    }     
+    }
+    */
 }
 ?>
 
@@ -95,8 +176,8 @@ if (isset($_POST["account_id"]))
     </table>
 </div>
 
-<div>
-    <?php if (isset($_POST["account_id"])) : ?>
+<div class="container-fluid">
+    <?php if (isset($_REQUEST["account_id"])) : ?>
         <h3>Account Information</h3>
         <table class="table">
             <thead>
@@ -112,7 +193,30 @@ if (isset($_POST["account_id"]))
                 <td><?php se($_POST, "created"); ?></td>
             </tr>
         </table>
-
+        <h4>Transaction History</h4>
+        <div>
+            <form>
+                <input type = hidden name = account_id value = <?php se($_REQUEST, "account_id"); ?>>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="start-date">Start</span>
+                        <input name="start" type="date" class="form-control" placeholder="mm/dd/yyyy" aria-label="start date" aria-describedby="start-date" value="<?php se($startDate); ?>">
+                    <span class="input-group-text" id="end-date">End</span>
+                        <input name="end" type="date" class="form-control" placeholder="mm/dd/yyyy" aria-label="end date" aria-describedby="end-date" value="<?php se($endDate); ?>">
+                    <span class="input-group-text" id="filter">Transaction Type</span>
+                    <select class="form-control" name="type" value="<?php se($type); ?>">
+                        <option value="deposit">Deposit</option>
+                        <option value="withdraw">Withdraw</option>
+                        <option value="transfer">Transfer</option>
+                    </select>
+                    <span class="input-group-text" id="sort">Sort</span>
+                    <select class="form-control" name="sort" aria-label="sort" aria-describedby="sort">
+                        <option value="desc">Created New to Old</option>
+                        <option value="asc">Created Old to New</option>
+                    </select>
+                </div>
+                <input type="submit" value="Filter" />
+            </form>
+        </div>
         <table class="table">
             <thead>
                 <th>Src</th>
