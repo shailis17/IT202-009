@@ -30,9 +30,9 @@ try {
     flash(var_export($e->errorInfo, true), "danger");
 }
 
-if (isset($_POST["account_id"]))
+if (isset($_REQUEST["account_id"]))
 {
-    $src_id = (int)se($_POST, "account_id", "", false);
+    $src_id = (int)se($_REQUEST, "account_id", "", false);
     //Sorts & Filters
     $startDate = se($_GET, "start", date("Y-m-d", strtotime("-1 month")), false);
     $endDate = se($_GET, "end", date("Y-m-d"), false);
@@ -47,7 +47,7 @@ if (isset($_POST["account_id"]))
     $params = []; //define default params, add keys as needed and pass to execute
     //apply src filter
     $query .= " AND src = :src_id ";
-    $params =  [":src_id" => "$src_id"];
+    $params =  [":src_id" => $src_id];
 
     //apply start-end date filter
     if ($startDate) 
@@ -61,7 +61,7 @@ if (isset($_POST["account_id"]))
         //offset the time to be 1 minute before end of day
         //by default the time component is 00:00:00 which is the beginning if this day
         //$params[":end"] = $end;
-        $params[":end"] = date("Y-m-d 23:59:59", strtotime($endDate));
+        $params[":endDate"] = date("Y-m-d 23:59:59", strtotime($endDate));
     }
 
     //apply type filter
@@ -177,7 +177,7 @@ if (isset($_POST["account_id"]))
 </div>
 
 <div class="container-fluid">
-    <?php if (isset($_POST["account_id"])) : ?>
+    <?php if (isset($_REQUEST["account_id"])) : ?>
         <h3>Account Information</h3>
         <table class="table">
             <thead>
@@ -196,6 +196,7 @@ if (isset($_POST["account_id"]))
         <h4>Transaction History</h4>
         <div>
             <form>
+                <input type = hidden name = account_id value = <?php se($_REQUEST, "account_id"); ?>>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="start-date">Start</span>
                         <input name="start" type="date" class="form-control" placeholder="mm/dd/yyyy" aria-label="start date" aria-describedby="start-date" value="<?php se($startDate); ?>">
