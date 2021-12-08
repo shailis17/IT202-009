@@ -254,68 +254,6 @@ function get_world_id($type = "world")
     return $world_id;
 }
 
-//get destination id from last name and last four digits of account number ==> ext-transfer
-function get_dest_id($lastname, $lastfour)
-{
-    $user_ids = get_user_id_by_lastname($lastname);
-    
-    $query = "SELECT id, account_number from Accounts ";
-    $params = null;
-
-    $query .= " WHERE account_number LIKE %:lastfour";
-    $params =  [":lastfour" => "$lastfour"];
-
-    $query .= " ORDER BY created desc";
-    $db = getDB();
-
-    $stmt = $db->prepare($query);
-    $accounts = [];
-    try {
-        $stmt->execute($params);
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if ($results) {
-            $accounts = $results;
-            //echo var_export($accounts, true); 
-        } else {
-            flash("No accounts found", "warning");
-        }
-    } catch (PDOException $e) {
-        flash(var_export($e->errorInfo, true), "danger");
-    }
-
-    $account = $accounts[0];
-    $world_id = (int)se($account, "id", "", false);
-    return $world_id;
-}
-
-function get_user_id_by_lastname($lastname)
-{
-    $query = "SELECT id from Users ";
-    $params = null;
-
-    $query .= " WHERE lastname = :lastname";
-    $params =  [":lastname" => "$lastname"];
-
-    $db = getDB();
-
-    $stmt = $db->prepare($query);
-    $users = [];
-    try {
-        $stmt->execute($params);
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if ($results) {
-            $users = $results;
-            //echo var_export($accounts, true); 
-        } else {
-            flash("No accounts found", "warning");
-        }
-    } catch (PDOException $e) {
-        flash(var_export($e->errorInfo, true), "danger");
-    }
-
-    return $users;
-}
-
 function refresh_account_balance($src_id)
 {
     

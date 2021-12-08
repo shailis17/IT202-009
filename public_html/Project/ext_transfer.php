@@ -40,8 +40,8 @@
         $lastfour = se($_POST, "lastfour", "", false);
         $dest = get_dest_id($lastname, $lastfour);
         $memo = $_POST["memo"];
-        //$balance = get_account_balance($src);
-        //flash("balance = $balance");
+
+        flash("dest = $dest");
         if($src == $dest)
         {
             flash("Cannot transfer to the same account", "warning");
@@ -65,6 +65,34 @@
     }
     else
         flash("Account Not Selected", "warning");
+
+
+
+    function get_dest_id($lastname, $lastfour)
+    {
+        $q = "SELECT Accounts.id, Accounts.account_number, Accounts.user_id, Users.lastname FROM Accounts INNER JOIN Users ON Accounts.user_id = Users.id WHERE Users.lastname LIKE :lastname AND Accounts.account_number LIKE :an ";
+        $p = ["lastname" => $lastname, "an" => "%$lastfour"];
+
+        $db = getDB();
+        $stmt = $db->prepare($q);
+        $results = [];
+        try {
+            $stmt->execute($p);
+            $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($r) {
+                $results = $r;
+                echo var_export($results, true); 
+            } else {
+                flash("No accounts found", "warning");
+            }
+        } catch (PDOException $e) {
+            flash(var_export($e->errorInfo, true), "danger");
+        }
+
+        $dest_account = $results[0];
+        $dest_id = (int)se($dest_account, "id", "", false);
+        return $dest_id;
+    }
 ?>
 
 <div class="container-fluid">
