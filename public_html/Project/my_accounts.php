@@ -159,7 +159,7 @@ if (isset($_REQUEST["account_id"]))
                         <td><?php se($account, "account_type"); ?></td>
                         <td><?php se($account, "balance"); ?></td>
                         <td>
-                            <form method="POST">
+                            <form method="POST" action="?account_id=<?php se($account, 'id');?>">
                                 <input type="hidden" name="account_id" value="<?php se($account, 'id'); ?>" />
                                 <input type="hidden" name="account_number" value="<?php se($account, 'account_number'); ?>" />
                                 <input type="hidden" name="type" value="<?php se($account, 'account_type'); ?>" />
