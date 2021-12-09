@@ -159,7 +159,7 @@ if (isset($_REQUEST["account_id"]))
                         <td><?php se($account, "account_type"); ?></td>
                         <td><?php se($account, "balance"); ?></td>
                         <td>
-                            <form method="POST">
+                            <form method="POST" action="?account_id=<?php se($account, 'id');?>">
                                 <input type="hidden" name="account_id" value="<?php se($account, 'id'); ?>" />
                                 <input type="hidden" name="account_number" value="<?php se($account, 'account_number'); ?>" />
                                 <input type="hidden" name="type" value="<?php se($account, 'account_type'); ?>" />
@@ -207,6 +207,7 @@ if (isset($_REQUEST["account_id"]))
                         <option value="deposit">Deposit</option>
                         <option value="withdraw">Withdraw</option>
                         <option value="transfer">Transfer</option>
+                        <option value="ext-transfer">External Transfer</option>
                     </select>
                     <span class="input-group-text" id="sort">Sort</span>
                     <select class="form-control" name="sort" aria-label="sort" aria-describedby="sort">
@@ -243,6 +244,7 @@ if (isset($_REQUEST["account_id"]))
                 <?php endforeach; ?>
             <?php endif; ?>
         </table>
+        <?php include(__DIR__ . "/../../partials/pagination.php"); ?>
     <?php endif; ?>
 </div>
 <?php
