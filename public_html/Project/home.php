@@ -26,6 +26,7 @@ else
   <a href="<?php echo get_url('deposit.php'); ?>" class="list-group-item list-group-item-action">Deposit</a>
   <a href="<?php echo get_url('withdraw.php'); ?>" class="list-group-item list-group-item-action">Withdraw</a>
   <a href="<?php echo get_url('transfer.php'); ?>" class="list-group-item list-group-item-action">Transfer</a>
+  <a href="<?php echo get_url('ext_transfer.php'); ?>" class="list-group-item list-group-item-action">External Transfer</a>
 </div>
 
 <?php

@@ -74,6 +74,7 @@
                         </option>
                     <?php endforeach; ?>
                 <?php endif; ?> 
+                </select>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="d">Amount to Withdraw</label>
