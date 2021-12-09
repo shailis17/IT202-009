@@ -487,42 +487,113 @@
                     - Used to check for sufficent withdrawal funds and fetch world account id 
 
 - Milestone 3
-    - [ ] (12/2/2021) User will be able to transfer between their accounts
+    - [X] (12/2/2021) User will be able to transfer between their accounts
         -  List of Evidence of Feature Completion
-            - Status: Compeleted
-            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/transfer.php
             - Pull Requests
                 - PR link #1: https://github.com/shailis17/IT202-009/pull/68
             - Screenshots
-                - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                    - Screenshot #1 description explaining what you're trying to show
-    - [ ] (12/8/2021) Transaction History page
+                - Screenshot #1 
+                    ![image](https://user-images.githubusercontent.com/83250817/145426025-f1a63b41-4a9d-44f1-bd68-bf26fde32498.png)
+
+                    - Form should include a dropdown first AccountSrc and a dropdown for AccountDest (only accounts the user owns; no world account)
+                    - Form should include a field for a positive numeric value
+                    - Form should allow the user to record a memo for the transaction
+                - Screenshot #2-3
+                    ![image](https://user-images.githubusercontent.com/83250817/145427717-9006292c-9b5a-49e9-a114-afdadc9b5014.png)
+                    ![image](https://user-images.githubusercontent.com/83250817/145427770-715ac9f7-a01e-4f69-8027-da21415219fe.png)
+                        
+                        - Each transaction is recorded as a transaction pair in the Transaction table
+                        - These will reflect in the transaction history page
+                - Screenshot #4-6
+                    ![image](https://user-images.githubusercontent.com/83250817/145428091-53474d08-7076-4116-b70a-1c70e0c0138b.png)
+                    ![image](https://user-images.githubusercontent.com/83250817/145428185-d78a3617-61f6-46ba-9d26-b0c2828dd400.png)
+                    ![image](https://user-images.githubusercontent.com/83250817/145428261-1c500941-57d1-4e5c-b19b-eebb05145c45.png)
+
+                    - Show appropriate user-friendly error messages
+                        - checks to see if src & dest are the same to prevent transfer to/from same account 
+                        - System shouldn’t allow the user to transfer more funds than what’s available in AccountSrc
+                        - checks amount field for a positive numeric value
+                - Screenshot #7
+                    ![image](https://user-images.githubusercontent.com/83250817/145427295-e13e1cb9-54fe-4a11-8573-c0b7d5799af8.png)
+    
+                    - User-friendly success message and redirection to my_accounts.php to view change in balance/transaction history
+
+    - [X] (12/8/2021) Transaction History page
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
-            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/my_accounts.php
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/70
+                - PR link #2: https://github.com/shailis17/IT202-009/pull/72
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
-    - [ ] (12/7/2021) User’s profile page should record/show First and Last name
+                - Screenshot #1 
+                ![image](https://user-images.githubusercontent.com/83250817/145429706-3f1f8950-d9ef-47f0-8d73-0324a04c1996.png)
+                ![image](https://user-images.githubusercontent.com/83250817/145429789-5b418c0f-cfb4-4206-ba94-9bc2d0376d94.png)
+                
+                    - Will show the latest 10 transactions by default
+                    - Transactions should paginate results after the initial 10
+                - Screenshot #2
+                ![image](https://user-images.githubusercontent.com/83250817/145430683-b6a413ef-9435-45af-9919-432fd9276b24.png)
+
+                    - User will be able to filter transactions between two dates
+                    - User will be able to filter transactions by type (deposit, withdraw, transfer)
+
+    - [X] (12/7/2021) User’s profile page should record/show First and Last name
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
-            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Status: Completed
+            - Direct Link: 
+                - Link #1: https://sss8-prod.herokuapp.com/Project/register.php
+                - Link #2: https://sss8-prod.herokuapp.com/Project/profile.php
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/69
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
-    - [ ] (12/8/2021) User will be able to transfer funds to another user’s account
+                - Screenshot #1-2
+                ![image](https://user-images.githubusercontent.com/83250817/145432004-ef000ca9-d3a7-4ec7-8c80-65468eca51f2.png)
+                ![image](https://user-images.githubusercontent.com/83250817/145431853-75b3c97d-3945-4f90-8300-e87c4130dce9.png)
+
+                    - User’s profile page should record/show First and Last name
+                    - Ask for this information upon registration
+    - [X] (12/8/2021) User will be able to transfer funds to another user’s account
         -  List of Evidence of Feature Completion
-            - Status: Pending (Completed, Partially working, Incomplete, Pending)
-            - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/ext_transfer.php
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/71
+                - PR link #2: https://github.com/shailis17/IT202-009/pull/73
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                - Screenshot #1
+                ![image](https://user-images.githubusercontent.com/83250817/145453716-318fe7ea-53a6-4166-8c8c-4a06fd35f874.png)
+
+                    - Form should include a dropdown of the current user’s accounts (as AccountSrc)
+                    - Form should include a field for the destination user’s last name
+                    - Form should include a field for the last 4 digits of the destination user’s account number (to lookup AccountDest)
+                    - Form should include a field for a positive numerical value
+                    - Form should allow the user to record a memo for the transaction
+                - Screenshots #2-6
+                ![image](https://user-images.githubusercontent.com/83250817/145452759-37a2e70c-7645-4a06-ab85-d9ccbbb544d6.png)
+                ![image](https://user-images.githubusercontent.com/83250817/145452803-921bd38c-1ef0-4f78-98d1-643572f8af3f.png)
+                ![image](https://user-images.githubusercontent.com/83250817/145452859-cad3fe29-d5a2-4add-9169-4e31d3188c70.png)
+                ![image](https://user-images.githubusercontent.com/83250817/145452934-452d6e03-c81b-4b1e-bbe9-3b607083048a.png)
+                ![image](https://user-images.githubusercontent.com/83250817/145452981-dd74e6f9-4c38-42e8-b106-29eed21ff519.png)
+
+                    - User-friendly error message
+                        - System shouldn’t let the user transfer more than the balance of their account
+                        - System will lookup appropriate account based on destination user’s last name and the last 4 digits of the account number
+                
+                - Screenshot #7
+                ![image](https://user-images.githubusercontent.com/83250817/145453065-4c47a32a-2017-44d8-883f-cbf677ab2231.png)
+
+                    - Success message and redirection to my_accounts.php to see balance change and transaction history
+
+                - Screenshot #8
+                ![image](https://user-images.githubusercontent.com/83250817/145453263-6ad91cbc-21b9-4ea7-a2f9-a470eb77debc.png)
+                    - Transaction will be recorded with the type as “ext-transfer”
+                    - Each transaction is recorded as a transaction pair in the Transaction table
+                    - These will reflect in the transaction history page
+
+
 - Milestone 4
 ### Intructions
 #### Don't delete this
