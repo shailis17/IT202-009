@@ -1,5 +1,9 @@
 <?php
     require(__DIR__ . "/../../partials/nav.php");
+    $transfer = (int)se($_POST, "transfer", "", false);
+    $src = (int)se($_POST, "src_id", "", false);
+    $lastname = se($_POST, "lastname", "", false);
+    $lastfour = se($_POST, "lastfour", "", false);
 
     if (!is_logged_in()) {
         flash("You don't have permission to view this page", "warning");
@@ -41,10 +45,18 @@
         $dest = get_dest_id($lastname, $lastfour);
         $memo = $_POST["memo"];
 
-        flash("dest = $dest");
+        //flash("dest = $dest");
         if($src == $dest)
         {
             flash("Cannot transfer to the same account", "warning");
+        }
+        elseif(empty($lastname))
+        {
+            flash("Please enter the last name associated with the account money is being transfered to", "warning");
+        }
+        elseif(empty($lastfour))
+        {
+            flash("Please enter the last four digits of the account number", "warning");
         }
         else if (!($transfer > 0))
         {
@@ -81,7 +93,7 @@
             $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if ($r) {
                 $results = $r;
-                echo var_export($results, true); 
+                //echo var_export($results, true); 
             } else {
                 flash("No accounts found", "warning");
             }
@@ -96,7 +108,7 @@
 ?>
 
 <div class="container-fluid">
-    <h2>Transfer</h2>
+    <h2>External Transfer</h2>
     <div>
         <form method="POST">
             <div class="mb-3">
