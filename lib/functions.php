@@ -121,6 +121,14 @@ function get_user_id()
     }
     return false;
 }
+function get_user_visibilty() 
+{
+    if (is_logged_in()) 
+    { //we need to check for login first because "user" key may not exist
+        return se($_SESSION["user"], "visibility", false, false);
+    }
+    return false;
+}
 
 //TODO 4: Flash Message Helpers
 function flash($msg = "", $color = "info")

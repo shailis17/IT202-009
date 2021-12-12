@@ -90,7 +90,7 @@ require(__DIR__."/../../partials/nav.php");?>
          //TODO 4
          $db = getDB();
          //lookup our user by email, we must select the password here since mySQL can't do the comparison
-         $stmt = $db->prepare("SELECT id, email, username, password, firstname, lastname FROM Users WHERE email = :email OR username = :email");
+         $stmt = $db->prepare("SELECT id, email, username, password, firstname, lastname, visibility FROM Users WHERE email = :email OR username = :email");
          try
          {
             $r = $stmt->execute([":email" => $email]);

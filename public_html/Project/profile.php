@@ -1,20 +1,40 @@
 <?php
 require_once(__DIR__ . "/../../partials/nav.php");
+/*
 if (!is_logged_in()) {
     redirect("login.php");
+}*/
+
+/**
+ * Logic:
+ * Check if query params have an id
+ * If so, use that id
+ * Else check logged in user id
+ * otherwise redirect away
+ */
+$user_id = se($_GET, "id", get_user_id(), false);
+error_log("user id $user_id");
+$isMe = $user_id === get_user_id();
+//!! makes the value into a true or false value regardless of the data https://stackoverflow.com/a/2127324
+$edit = !!se($_GET, "edit", false, false); //if key is present allow edit, otherwise no edit
+if ($user_id < 1) {
+    flash("Invalid user", "danger");
+    redirect("home.php");
+    //die(header("Location: home.php"));
 }
 ?>
 <?php
-if (isset($_POST["save"])) {
+//only allow profile updating if profile belongs to the user visiting this page and it's in edit mode
+if (isset($_POST["save"]) && $isMe && $edit) {
     $email = se($_POST, "email", null, false);
     $username = se($_POST, "username", null, false);
     $firstname = se($_POST, "firstname", null, false);
     $lastname = se($_POST, "lastname", null, false);
+    $visibility = !!se($_POST, "visibility", false, false) ? 1 : 0;
 
-
-    $params = [":email" => $email, ":username" => $username, "firstname" => $firstname, "lastname" => $lastname, ":id" => get_user_id()];
+    $params = [":email" => $email, ":username" => $username, "firstname" => $firstname, "lastname" => $lastname, ":vis" => $visibility, ":id" => get_user_id()];
     $db = getDB();
-    $stmt = $db->prepare("UPDATE Users set email = :email, username = :username, firstname = :firstname, lastname = :lastname where id = :id");
+    $stmt = $db->prepare("UPDATE Users set email = :email, username = :username, firstname = :firstname, lastname = :lastname, visibility = :vis where id = :id");
     try {
         $stmt->execute($params);
     } catch (Exception $e) {
@@ -35,7 +55,7 @@ if (isset($_POST["save"])) {
         }
     }
     //select fresh data from table
-    $stmt = $db->prepare("SELECT id, email, IFNULL(username, email) as `username`, firstname, lastname from Users where id = :id LIMIT 1");
+    $stmt = $db->prepare("SELECT id, email, IFNULL(username, email) as `username`, firstname, lastname, visibility from Users where id = :id LIMIT 1");
     try {
         $stmt->execute([":id" => get_user_id()]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -45,6 +65,7 @@ if (isset($_POST["save"])) {
             $_SESSION["user"]["username"] = $user["username"];
             $_SESSION["user"]["firstname"] = $user["firstname"];
             $_SESSION["user"]["lastname"] = $user["lastname"];
+            $_SESSION["user"]["visibility"] = $user["visibility"];
 
         } else {
             flash("User doesn't exist", "danger");
@@ -96,10 +117,38 @@ $email = get_user_email();
 $username = get_username();
 $firstname = get_user_firstname();
 $lastname = get_user_lastname();
+$visibility = get_user_visibilty();
 ?>
 
 <div class="container-fluid">
     <h1>Profile</h1>
+    <div class="mb-3">
+    <?php if ($isMe) : ?>
+        <?php if ($edit) : ?>
+            <a class="btn btn-outline-secondary" href="?">View</a>
+        <?php else : ?>
+            <a class="btn  btn-outline-secondary" href="?edit=true">Edit</a>
+        <?php endif; ?>
+    <?php endif; ?>
+    </div>
+
+    <!-- show public info -->
+    <?php if (!$edit) : ?>
+        <div class="mb-3">
+            <label class="form-label" for="username">Username</label>
+            <input class="form-control" type="text" name="username" id="username" value="<?php se($username); ?>" readonly/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="firstname">First Name</label>
+            <input class="form-control" type="text" name="firstname" id="firstname" value="<?php se($firstname); ?>" readonly/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="lastname">Last Name</label>
+            <input class="form-control" type="text" name="lastname" id="lastname" value="<?php se($lastname); ?>" readonly/>
+        </div>
+    <?php endif; ?>
+    
+    <?php if ($isMe && $edit) : ?>
     <form method="POST" onsubmit="return validate(this);">
         <div class="mb-3">
             <label class="form-label" for="email">Email</label>
@@ -117,6 +166,12 @@ $lastname = get_user_lastname();
             <label class="form-label" for="lastname">Last Name</label>
             <input class="form-control" type="text" name="lastname" id="lastname" value="<?php se($lastname); ?>" />
         </div>
+        <div class="mb-3">
+            <div class="form-check form-switch">
+                <input name="visibility" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" <?php if ($visibility) echo "checked"; ?> autocomplete="off">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Make Profile Public</label>
+            </div>
+        </div>
         <!-- DO NOT PRELOAD PASSWORD -->
         <div class="mb-3"><h5>Password Reset</h5></div>
         <div class="mb-3">
@@ -133,6 +188,7 @@ $lastname = get_user_lastname();
         </div>
         <input type="submit" value="Update Profile" name="save" />
     </form>
+    <?php endif; ?>
 </div>
 
 <script>
