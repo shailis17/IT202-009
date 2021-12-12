@@ -4,7 +4,7 @@ require(__DIR__ . "/../../partials/nav.php");
 
 if (!is_logged_in()) {
     flash("You don't have permission to view this page", "warning");
-    die(header("Location: " . get_url("home.php")));
+    redirect("home.php");
 }
 
 if (isset($_POST["checkings"]) && isset($_POST["deposit"])) 
@@ -52,7 +52,7 @@ if (isset($_POST["checkings"]) && isset($_POST["deposit"]))
         $aid = $account_id + 1;
         change_balance($deposit, "deposit", $aid, -1, $aid, "opening balance");
         refresh_account_balance($aid);
-        die(header("Location: " . get_url("my_accounts.php")));
+        redirect("my_accounts.php");
     }
 }
 else

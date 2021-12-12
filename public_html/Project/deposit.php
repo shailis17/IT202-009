@@ -3,7 +3,7 @@
 
     if (!is_logged_in()) {
         flash("You don't have permission to view this page", "warning");
-        die(header("Location: " . get_url("home.php")));
+        redirect("home.php");
     }
 
     $uid = get_user_id();
@@ -48,7 +48,7 @@
             change_balance($deposit, "deposit",$aid, $wid, $aid, $memo);
             refresh_account_balance($aid);
             flash("Deposit was successful", "success");
-            die(header("Location: " . get_url("my_accounts.php")));
+            redirect("my_accounts.php");
         }
     }
     else
