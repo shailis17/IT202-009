@@ -7,9 +7,9 @@ if (!is_logged_in()) {
     redirect("home.php");
 }
 
-if (isset($_POST["checkings"]) && isset($_POST["deposit"])) 
+if (isset($_POST["a_type"]) && isset($_POST["deposit"])) 
 {
-    $type = "checkings";
+    $type = se($_POST, "a_type", "", false);
     $deposit = (int)se($_POST, "deposit", "", false);
     if ($deposit < 5) 
     {
@@ -63,11 +63,11 @@ else
     <h2>Create Account</h2>
     <form method="POST">
         <div class="form-check">
-            <h4>Account Type</h4>
-            <input class="form-check-input" type="radio" name="checkings" id="checkings">
-            <label class="form-check-label" for="checkings">
-                Checkings
-            </label>
+            <label for="sourceList" class="form-label">Choose an Account to Transfer Money From</label>
+            <select class="form-select" name="a_type" id="accountTypes" autocomplete="off">
+                <option value="checkings">Checkings</option>
+                <option value="savings">Savings</option>
+            </select>
         </div>
         <div class="mb-3">
             <label class="form-label" for="d">Deposit (Min = $5) </label>
