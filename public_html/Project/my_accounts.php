@@ -143,7 +143,24 @@ function loanBalance($balance)
     echo((int)$balance*-1);
 }
 
+if(isset($_POST['close']) && isset($_POST['close_aid']))
+{
+    $c_aid = (int)se($_POST, "close_aid", "", false);
+    $q = "UPDATE Accounts set active = 0 where id = :c_aid";
+    $db = getDB();
+    $stmt = $db->prepare($q);
+    try {
+        $stmt->execute([":c_aid" => $c_aid]);
+    } catch (PDOException $e) {
+        flash("Error closing account: " . var_export($e->errorInfo, true), "danger");
+    }
+
+    flash("Successfully closed account, you may refresh/navigate away from the page", "success");
+
+}
+
 ?>
+
 
 <div class="container-fluid">
     <h2>My Accounts</h2>
@@ -180,6 +197,14 @@ function loanBalance($balance)
                                 <input type="submit" value="More Info" />
                             </form>
                         </td>
+                        <?php if((int)se($account, "balance", "", false) == 0) : ?>
+                            <td>
+                            <form method="POST" onsubmit="return confirm('Are you sure you want to close this account?');">
+                                <input type="hidden" name="close_aid" value="<?php se($account, 'id'); ?>" />
+                                <input type="submit" name="close" value="Close Account" />
+                            </form>
+                            </td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
