@@ -373,5 +373,30 @@ function persistQueryString($page)
     return http_build_query($_GET);
 }
 
+//get APY rate from system properties table
+function getAPY($apy_type)
+{
+    $q = "SELECT apy_type, apy FROM SystemProperties WHERE apy_type = :apy_type";
+    $p = [":apy_type" => $apy_type];
 
+    $db = getDB();
+    $stmt = $db->prepare($q);
+    $results = [];
+    try {
+        $stmt->execute($p);
+        $r = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+        if ($r) {
+            $results = $r;
+            //echo var_export($results, true); 
+        } else {
+            flash("No accounts found", "warning");
+        }
+    } catch (PDOException $e) {
+        flash(var_export($e->errorInfo, true), "danger");
+    }
+
+    $apy = se($results[$apy_type], 'apy_type',"", false);
+    //se($apy);
+    return $apy;
+}
 ?>
