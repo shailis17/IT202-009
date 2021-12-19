@@ -10,8 +10,8 @@
     $query = "SELECT account_number, account_type, balance, created, id from Accounts ";
     $params = null;
 
-    $query .= " WHERE user_id = :uid";
-    $params =  [":uid" => "$uid"];
+    $query .= " WHERE user_id = :uid AND NOT account_type = :loan";
+    $params =  [":uid" => "$uid", ":loan" => "loan"];
 
     $query .= " ORDER BY created desc";
     $db = getDB();
