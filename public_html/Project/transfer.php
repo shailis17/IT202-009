@@ -37,6 +37,8 @@
         $transfer = (int)se($_POST, "transfer", "", false);
         $src = (int)se($_POST, "src_id", "", false);
         $dest = (int)se($_POST, "dest_id", "", false);
+        $dest_type = get_account_type($dest);
+        //flash("dest type = $dest_type");
         $memo = $_POST["memo"];
         //$balance = get_account_balance($src);
         //flash("balance = $balance");
@@ -54,11 +56,32 @@
         }
         else
         {
-            change_balance($transfer, "transfer", $src, $src, $dest, $memo);
-            refresh_account_balance($src);
-            refresh_account_balance($dest);
-            flash("Transfer was successful", "success");
-            redirect("my_accounts.php");
+            if($dest_type == 'loan')
+            {
+                $owe = get_account_balance($dest)*-1;
+                if($owe < $transfer)
+                {
+                    flash("You only owe $owe to pay off your loan", "warning");
+                }
+                else
+                {
+                    change_balance($transfer, "transfer", $src, $src, $dest, $memo);
+                    refresh_account_balance($src);
+                    refresh_account_balance($dest);
+                    flash("Transfer was successful", "success");
+                    if(get_account_balance($dest) == 0)
+                        flash("Congratulations! You payed off your loan", "success");
+                    redirect("my_accounts.php");
+                }
+            }
+            else{
+                change_balance($transfer, "transfer", $src, $src, $dest, $memo);
+                refresh_account_balance($src);
+                refresh_account_balance($dest);
+                flash("Transfer was successful", "success");
+
+                redirect("my_accounts.php");
+            }
         }
     }
     else
