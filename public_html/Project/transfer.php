@@ -74,9 +74,11 @@
                 <select class="form-select" name="src_id" id="sourceList" autocomplete="off">
                 <?php if (!empty($accounts)) : ?>
                     <?php foreach ($accounts as $account) : ?>
+                        <?php if(se($account, "account_type", "", false) != 'loan') : ?>
                         <option value="<?php se($account, 'id'); ?>">
                             <?php se($account, "account_number"); ?> (Type: <?php se($account, 'account_type'); ?>; Balance = $<?php se($account, "balance"); ?>)
                         </option>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 <?php endif; ?> 
                 </select>

@@ -12,8 +12,8 @@ $uid = get_user_id();
 $query = "SELECT account_number, account_type, balance, created, id from Accounts ";
 $params = null;
 
-$query .= " WHERE user_id = :uid";
-$params =  [":uid" => "$uid"];
+$query .= " WHERE user_id = :uid AND NOT account_type = :loan";
+$params =  [":uid" => "$uid", ":loan" => "loan"];
 
 $query .= " ORDER BY created desc";
 $db = getDB();
@@ -110,7 +110,7 @@ else
             <label class="form-label" for="d">Deposit (Min = $500) </label>
             <input class="form-control" type="number" name="deposit" id="d"></input>
         </div>
-        <input type="submit" value="Loan" />
+        <input type="submit" value="Get Loan" />
     </form>
 </div>
 
