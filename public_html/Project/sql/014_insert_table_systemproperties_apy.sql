@@ -1,0 +1,1 @@
+INSERT INTO SystemProperties VALUES ('savings',0.16), ('checkings', 0), ('loan', 6.99);
