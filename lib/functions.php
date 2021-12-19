@@ -220,7 +220,7 @@ function get_account_balance($aid)
     $query = "SELECT balance, id from Accounts ";
     $params = null;
 
-    $query .= " WHERE id = :aid";
+    $query .= " WHERE id = :aid AND active = 1";
     $params =  [":aid" => "$aid"];
 
     $query .= " ORDER BY created desc";
@@ -251,7 +251,7 @@ function get_account_type($aid)
     $query = "SELECT account_type, id from Accounts ";
     $params = null;
 
-    $query .= " WHERE id = :aid";
+    $query .= " WHERE id = :aid AND active = 1";
     $params =  [":aid" => "$aid"];
 
     $query .= " ORDER BY created desc";
@@ -282,7 +282,7 @@ function get_world_id($type = "world")
     $query = "SELECT account_type, id from Accounts ";
     $params = null;
 
-    $query .= " WHERE account_type = :type";
+    $query .= " WHERE account_type = :type AND active = 1";
     $params =  [":type" => "$type"];
 
     $query .= " ORDER BY created desc";
