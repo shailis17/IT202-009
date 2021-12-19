@@ -10,6 +10,8 @@ if (!is_logged_in()) {
 if (isset($_POST["a_type"]) && isset($_POST["deposit"])) 
 {
     $type = se($_POST, "a_type", "", false);
+    $apy = getAPY($type);
+    //flash("rate: $apy");
     $deposit = (int)se($_POST, "deposit", "", false);
     if ($deposit < 5) 
     {
@@ -21,15 +23,15 @@ if (isset($_POST["a_type"]) && isset($_POST["deposit"]))
         {
             $db = getDB();
             $an = null;
-            $stmt = $db->prepare("INSERT INTO Accounts (account_number, user_id, balance, account_type) VALUES(:an, :uid, :deposit, :type)");
+            $stmt = $db->prepare("INSERT INTO Accounts (account_number, user_id, balance, account_type, apy) VALUES(:an, :uid, :deposit, :type, :apy)");
             $uid = get_user_id(); //caching a reference
 
             try {
-                $stmt->execute([":an" => $an, ":uid" => null, ":type" => null, ":deposit" => null]);
+                $stmt->execute([":an" => $an, ":uid" => null, ":type" => null, ":deposit" => null, ":apy" => null]);
                 $account_id = $db->lastInsertId();
                 //flash("account_id = $account_id");
                 $an = str_pad($account_id+1,12,"202", STR_PAD_LEFT);
-                $stmt->execute([":an" => $an, ":uid" => $uid, ":type" => $type, ":deposit" => $deposit]);
+                $stmt->execute([":an" => $an, ":uid" => $uid, ":type" => $type, ":deposit" => $deposit, ":apy" => $apy]);
                 
                 flash("Successfully created account!", "success");
             } 
@@ -57,6 +59,33 @@ if (isset($_POST["a_type"]) && isset($_POST["deposit"]))
 }
 else
     flash("Account type must be selected", "warning");
+
+function getAPY($apy_type)
+{
+    $q = "SELECT apy_type, apy FROM SystemProperties WHERE apy_type = :apy_type";
+    $p = [":apy_type" => $apy_type];
+
+    $db = getDB();
+    $stmt = $db->prepare($q);
+    $results = [];
+    try {
+        $stmt->execute($p);
+        $r = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+        if ($r) {
+            $results = $r;
+            //echo var_export($results, true); 
+        } else {
+            flash("No accounts found", "warning");
+        }
+    } catch (PDOException $e) {
+        flash(var_export($e->errorInfo, true), "danger");
+    }
+
+    $apy = se($results[$apy_type], 'apy_type',"", false);
+    //se($apy);
+    return $apy;
+}
+
 ?>
 
 <div class="container-fluid">
