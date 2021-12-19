@@ -184,14 +184,18 @@ if (isset($_REQUEST["account_id"]))
             <thead>
                 <th>Account Number</th>
                 <th>Account Type</th>
-                <th>APY</th>
+                <?php if (se($_POST, 'apy',"", false) > 0) : ?>
+                    <th>APY</th>
+                <?php endif ?>
                 <th>Balance</th>
                 <th>Opened</th>
             </thead>
             <tr>
                 <td><?php se($_POST, "account_number"); ?></td>
                 <td><?php se($_POST, "type"); ?></td>
-                <td><?php se($_POST, 'apy'); ?></td>
+                <?php if (se($_POST, 'apy',"", false) > 0) : ?>
+                    <td><?php se($_POST, "apy"); ?></td>
+                <?php endif ?>
                 <td><?php se($_POST, "balance"); ?></td>
                 <td><?php se($_POST, "created"); ?></td>
             </tr>
