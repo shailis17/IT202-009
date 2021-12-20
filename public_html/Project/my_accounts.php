@@ -8,13 +8,13 @@ if (!is_logged_in()) {
 }
 
 $uid = get_user_id();
-$query = "SELECT account_number, account_type, balance, created, apy, id from Accounts ";
+$query = "SELECT account_number, account_type, balance, created, apy, id, frozen from Accounts ";
 $params = null;
 
 $query .= " WHERE user_id = :uid AND active = 1";
 $params =  [":uid" => "$uid"];
 
-$query .= " ORDER BY created desc LIMIT 5";
+$query .= " ORDER BY created desc";
 $db = getDB();
 $stmt = $db->prepare($query);
 $accounts = [];
@@ -193,8 +193,13 @@ if(isset($_POST['close']) && isset($_POST['close_aid']))
                                 <input type="hidden" name="balance" value="<?php se($account, 'balance'); ?>" />
                                 <input type="hidden" name="created" value="<?php se($account, 'created'); ?>" />
                                 <input type="hidden" name="apy" value="<?php se($account, 'apy'); ?>" />
+                                <input type="hidden" name="frozen" value="<?php se($account, 'frozen'); ?>" />
 
-                                <input type="submit" value="More Info" />
+                                <?php if ((int)se($account, 'frozen',"", false) == 1) : ?>
+                                    FROZEN
+                                <?php else : ?>
+                                    <input type="submit" value="More Info" />
+                                <?php endif; ?>
                             </form>
                         </td>
                         <?php if((int)se($account, "balance", "", false) == 0) : ?>
