@@ -25,6 +25,13 @@ nav li a
     text-align: center;
     padding: 25px 16px;
 }
+
+#navbarDropdown
+{  
+    text-align: center;
+    padding: 1px 25px;
+}
+
 nav li a:hover {background-color: rosybrown}
 
 body{
