@@ -18,7 +18,7 @@ if(isset($_POST['search']) && (!empty($_POST['firstname']) || !empty($_POST['las
     $an = se($_POST, "an", "", false);
 
     //build query
-    $query = "SELECT Accounts.id, Accounts.account_number, Accounts.account_type, Accounts.created, Accounts.balance, Users.firstname, Users.lastname FROM Accounts INNER JOIN Users ON Accounts.user_id = Users.id WHERE Accounts.active = 1";
+    $query = "SELECT Accounts.id, Accounts.account_number, Accounts.account_type, Accounts.created, Accounts.balance, Accounts.apy, Accounts.frozen, Users.firstname, Users.lastname FROM Accounts INNER JOIN Users ON Accounts.user_id = Users.id WHERE Accounts.active = 1";
     
     if ($firstname) 
     {
@@ -60,7 +60,7 @@ else
 if(isset($_POST['freeze']) && isset($_POST['freeze_aid']))
 {
     $f_aid = (int)se($_POST, "freeze_aid", "", false);
-    $q = "UPDATE Accounts set active = 0 where id = :f_aid";
+    $q = "UPDATE Accounts set frozen = 1 where id = :f_aid";
     $db = getDB();
     $stmt = $db->prepare($q);
     try {
@@ -217,16 +217,21 @@ function loanBalance($balance)
                                 <input type="hidden" name="balance" value="<?php se($account, 'balance'); ?>" />
                                 <input type="hidden" name="created" value="<?php se($account, 'created'); ?>" />
                                 <input type="hidden" name="apy" value="<?php se($account, 'apy'); ?>" />
+                                <input type="hidden" name="frozen" value="<?php se($account, 'frozen'); ?>" />
 
                                 <input type="submit" name="history" value="More Info" />
                             </form>
                         </td>
-                        <td>
+                        <?php if ((int)se($account, 'frozen',"", false) == 1) : ?>
+                            <td>FROZEN</td>
+                        <?php else : ?>
+                            <td>
                             <form method="POST" onsubmit="return confirm('Are you sure you want to close this account?');">
                                 <input type="hidden" name="freeze_aid" value="<?php se($account, 'id'); ?>" />
                                 <input type="submit" name="freeze" value="Freeze Account" />
                             </form>
-                        </td>
+                            </td>
+                        <?php endif ?>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -264,6 +269,10 @@ function loanBalance($balance)
                 <?php endif; ?>
                 
                 <td><?php se($_POST, "created"); ?></td>
+
+                <?php if ((int)se($_POST, 'frozen',"", false) == 1) : ?>
+                    <td>FROZEN</td>
+                <?php endif ?>
             </tr>
         </table>
         <h4>Transaction History</h4>
