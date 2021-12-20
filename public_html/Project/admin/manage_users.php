@@ -105,6 +105,24 @@ if (isset($_POST["a_type"]) && isset($_POST["deposit"]))
 else
     flash("Account type must be selected", "warning");
 
+//deactivate user
+if(isset($_POST['deactivate']) && isset($_POST['de_uid']))
+{
+    $uid = (int)se($_POST, "de_uid", "", false);
+    $q = "UPDATE Users set active = 0 where id = :de_uid";
+    $db = getDB();
+    $stmt = $db->prepare($q);
+    try {
+        $stmt->execute([":de_uid" => $uid]);
+    } catch (PDOException $e) {
+        flash("Error closing account: " . var_export($e->errorInfo, true), "danger");
+    }
+
+    flash("Successfully deactivated account, you may refresh/navigate away from the page", "success");
+
+}
+
+
 ?>
 
 <div class="container-fluid">
@@ -156,7 +174,7 @@ else
                         </td>
                         <td>
                             <form method="POST" onsubmit="return confirm('Are you sure you want to deactivate this user?');">
-                                <input type="hidden" name="uid" value="<?php se($user, 'id'); ?>" />
+                                <input type="hidden" name="de_uid" value="<?php se($user, 'id'); ?>" />
                                 <input type="submit" name="deactivate" value="Deactivate User" />
                             </form>
                         </td>
