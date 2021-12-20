@@ -90,7 +90,7 @@ require(__DIR__."/../../partials/nav.php");?>
          //TODO 4
          $db = getDB();
          //lookup our user by email, we must select the password here since mySQL can't do the comparison
-         $stmt = $db->prepare("SELECT id, email, username, password, firstname, lastname, visibility FROM Users WHERE email = :email OR username = :email");
+         $stmt = $db->prepare("SELECT id, email, username, password, firstname, lastname, visibility, active FROM Users WHERE email = :email OR username = :email");
          try
          {
             $r = $stmt->execute([":email" => $email]);
@@ -105,25 +105,30 @@ require(__DIR__."/../../partials/nav.php");?>
                     unset($user["password"]);
                     if(password_verify($password, $hash))
                     {
+                        if($user["active"] == 0)
+                            flash("Sorry your account is no longer active", "danger");
                        //echo "Welcome, $email";
                        //flash("Welcome, $email");
-                       $_SESSION["user"] = $user;
-                       //lookup potential roles:
-                       $stmt = $db->prepare("SELECT Roles.name FROM Roles 
-                        JOIN UserRoles on Roles.id = UserRoles.role_id 
-                        where UserRoles.user_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
-                        $stmt->execute([":user_id" => $user["id"]]);
-                        $roles = $stmt->fetchAll(PDO::FETCH_ASSOC); //fetch all since we'll want multiple
-                        //save roles or empty array
-                        if ($roles) 
-                        {
-                            $_SESSION["user"]["roles"] = $roles; //at least 1 role
-                        } 
-                        else 
-                        {
-                            $_SESSION["user"]["roles"] = []; //no roles
-                        }
-                        redirect("home.php");
+                       else
+                       {
+                            $_SESSION["user"] = $user;
+                            //lookup potential roles:
+                            $stmt = $db->prepare("SELECT Roles.name FROM Roles 
+                            JOIN UserRoles on Roles.id = UserRoles.role_id 
+                            where UserRoles.user_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
+                            $stmt->execute([":user_id" => $user["id"]]);
+                            $roles = $stmt->fetchAll(PDO::FETCH_ASSOC); //fetch all since we'll want multiple
+                            //save roles or empty array
+                            if ($roles) 
+                            {
+                                $_SESSION["user"]["roles"] = $roles; //at least 1 role
+                            } 
+                            else 
+                            {
+                                $_SESSION["user"]["roles"] = []; //no roles
+                            }
+                            redirect("home.php");
+                       }
                     }
                     else
                     {  

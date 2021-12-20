@@ -66,7 +66,7 @@ else
     <h2>Create Account</h2>
     <form method="POST">
         <div class="form-check">
-            <label for="sourceList" class="form-label">Choose an Account to Transfer Money From</label>
+            <label for="sourceList" class="form-label">Choose an Account Type</label>
             <select class="form-select" name="a_type" id="accountTypes" autocomplete="off">
                 <option value="checkings">Checkings</option>
                 <option value="savings">Savings</option>

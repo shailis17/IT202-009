@@ -10,7 +10,7 @@
     $query = "SELECT account_number, account_type, balance, created, id, active from Accounts ";
     $params = null;
 
-    $query .= " WHERE user_id = :uid AND active = 1 AND NOT account_type = :loan";
+    $query .= " WHERE user_id = :uid AND active = 1 AND frozen = 0 AND NOT account_type = :loan";
     $params =  [":uid" => "$uid", ":loan" => "loan"];
 
     $query .= " ORDER BY created desc";
