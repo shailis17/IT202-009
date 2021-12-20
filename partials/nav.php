@@ -53,6 +53,7 @@ crossorigin="anonymous"></script>
           </ul>
         </li>
             <li><a href="<?php echo get_url('admin/view_accounts.php'); ?>">View Accounts</a></li>
+            <li><a href="<?php echo get_url('admin/manage_users.php'); ?>">Manage Users</a></li>
         <?php endif; ?>
         <?php if (is_logged_in()) : ?>
             <li><a href="<?php echo get_url('logout.php'); ?>">Logout</a></li>

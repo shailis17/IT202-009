@@ -226,7 +226,7 @@ function loanBalance($balance)
                             <td>FROZEN</td>
                         <?php else : ?>
                             <td>
-                            <form method="POST" onsubmit="return confirm('Are you sure you want to close this account?');">
+                            <form method="POST" onsubmit="return confirm('Are you sure you want to freeze this account?');">
                                 <input type="hidden" name="freeze_aid" value="<?php se($account, 'id'); ?>" />
                                 <input type="submit" name="freeze" value="Freeze Account" />
                             </form>
