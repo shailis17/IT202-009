@@ -3,15 +3,15 @@
 
     if (!is_logged_in()) {
         flash("You don't have permission to view this page", "warning");
-        die(header("Location: " . get_url("home.php")));
+        redirect("home.php");
     }
 
     $uid = get_user_id();
     $query = "SELECT account_number, account_type, balance, created, id from Accounts ";
     $params = null;
 
-    $query .= " WHERE user_id = :uid";
-    $params =  [":uid" => "$uid"];
+    $query .= " WHERE user_id = :uid AND active = 1 AND frozen = 0 AND NOT account_type = :loan";
+    $params =  [":uid" => "$uid", ":loan" => "loan"];
 
     $query .= " ORDER BY created desc";
     $db = getDB();
@@ -53,7 +53,7 @@
             change_balance($withdraw, "withdraw",$aid, $aid, $wid, $memo);
             refresh_account_balance($aid);
             flash("Withdraw was successful", "success");
-            die(header("Location: " . get_url("my_accounts.php")));
+            redirect("my_accounts.php");
         }
     }
     else

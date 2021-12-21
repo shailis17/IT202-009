@@ -1,35 +1,79 @@
 <?php
-//note we need to go up 1 more directory
-require(__DIR__ . "/../../partials/nav.php");
+require(__DIR__ . "/../../../partials/nav.php");
 
-if (!is_logged_in()) {
+if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
     redirect("home.php");
 }
 
-$uid = get_user_id();
-$query = "SELECT account_number, account_type, balance, created, apy, id, frozen from Accounts ";
-$params = null;
+$firstname = se($_POST, "firstname", "", false);
+$lastname = se($_POST, "lastname", "", false);
+$an = se($_POST, "an", "", false);
 
-$query .= " WHERE user_id = :uid AND active = 1";
-$params =  [":uid" => "$uid"];
+if(isset($_POST['search']) && (!empty($_POST['firstname']) || !empty($_POST['lastname']) || !empty($_POST['an'])))
+{
+    //set up search variables
+    $firstname = se($_POST, "firstname", "", false);
+    $lastname = se($_POST, "lastname", "", false);
+    $an = se($_POST, "an", "", false);
 
-$query .= " ORDER BY created desc";
-$db = getDB();
-$stmt = $db->prepare($query);
-$accounts = [];
-try {
-    $stmt->execute($params);
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if ($results) {
-        $accounts = $results;
-    } else {
-        flash("No accounts found", "warning");
+    //build query
+    $query = "SELECT Accounts.id, Accounts.account_number, Accounts.account_type, Accounts.created, Accounts.balance, Accounts.apy, Accounts.frozen, Users.firstname, Users.lastname FROM Accounts INNER JOIN Users ON Accounts.user_id = Users.id WHERE Accounts.active = 1";
+    
+    if ($firstname) 
+    {
+        $query .= " AND Users.firstname = :firstname ";
+        $params[":firstname"] = $firstname;
     }
-} catch (PDOException $e) {
-    flash(var_export($e->errorInfo, true), "danger");
+    if ($lastname) 
+    {
+        $query .= " AND Users.lastname = :lastname ";
+        $params[":lastname"] = $lastname;
+    }
+    if ($an) 
+    {
+        $query .= " AND Accounts.account_number LIKE :an ";
+        $params[":an"] = "%$an%";
+    }
+
+    //search database
+    $db = getDB();
+    $stmt = $db->prepare($query);
+    $accounts = [];
+    try {
+        $stmt->execute($params);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($results) {
+            $accounts = $results;
+        } else {
+            flash("No accounts found", "warning");
+        }
+    } catch (PDOException $e) {
+        flash(var_export($e->errorInfo, true), "danger");
+    }
+}
+else
+{
+    flash("Need information to search", "warning");
 }
 
+if(isset($_POST['freeze']) && isset($_POST['freeze_aid']))
+{
+    $f_aid = (int)se($_POST, "freeze_aid", "", false);
+    $q = "UPDATE Accounts set frozen = 1 where id = :f_aid";
+    $db = getDB();
+    $stmt = $db->prepare($q);
+    try {
+        $stmt->execute([":f_aid" => $f_aid]);
+    } catch (PDOException $e) {
+        flash("Error closing account: " . var_export($e->errorInfo, true), "danger");
+    }
+
+    flash("Successfully froze account, you may refresh/navigate away from the page", "success");
+
+}
+
+//paginate transaction history:
 if (isset($_REQUEST["account_id"]))
 {
     $src_id = (int)se($_REQUEST, "account_id", "", false);
@@ -110,60 +154,40 @@ if (isset($_REQUEST["account_id"]))
     catch (PDOException $e) {
         flash(var_export($e->errorInfo, true), "danger");
     }
-    
-    //SHOWS 10 LATEST TRANSACTIONS ORDERED BY CREATED NEW TO OLD ==> per Milestone2
-    /*
-    $query = "SELECT src, dest, transactionType, balanceChange, memo, created from Transaction_History ";
-    $params = null;
-
-    $query .= " WHERE src = :src_id";
-    $params =  [":src_id" => "$src_id"];
-
-    $query .= " ORDER BY created desc LIMIT 10";
-    $db = getDB();
-    $stmt = $db->prepare($query);
-    global $transactions; $transactions = [];
-
-    try {
-        $stmt->execute($params);
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if ($results) {
-            $transactions = $results;
-        } else {
-            flash("No transactions found", "warning");
-        }
-    } catch (PDOException $e) {
-        flash(var_export($e->errorInfo, true), "danger");
-    }
-    */
 }
 
+//print loan positive
 function loanBalance($balance)
 {
     echo((int)$balance*-1);
 }
 
-if(isset($_POST['close']) && isset($_POST['close_aid']))
-{
-    $c_aid = (int)se($_POST, "close_aid", "", false);
-    $q = "UPDATE Accounts set active = 0 where id = :c_aid";
-    $db = getDB();
-    $stmt = $db->prepare($q);
-    try {
-        $stmt->execute([":c_aid" => $c_aid]);
-    } catch (PDOException $e) {
-        flash("Error closing account: " . var_export($e->errorInfo, true), "danger");
-    }
-
-    flash("Successfully closed account, you may refresh/navigate away from the page", "success");
-
-}
-
 ?>
 
-
 <div class="container-fluid">
-    <h2>My Accounts</h2>
+    <h2>View User Accounts</h2>
+    <div>
+        <h4>Search by:</h4>
+        <form method="POST">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="firstname">First Name</span>
+                <input type="text" name="firstname" class="form-control" aria-label="User's First Name" aria-describedby="firstname" value="<?php se($firstname); ?>">
+                
+                <span class="input-group-text" id="lastname">Last Name</span>
+                <input type="text" name="lastname" class="form-control" aria-label="User's Last Name" aria-describedby="lastname" value="<?php se($lastname); ?>">
+
+                <span class="input-group-text" id="an">Account Number</span>
+                <input type="text" name="an" class="form-control" aria-label="Account Number" aria-describedby="an" value="<?php se($an); ?>">
+            </div>
+            <input type="submit" name="search" value="Filter" />
+        </form>
+    </div>
+</div>
+
+<?php if (isset($_POST["search"])) : ?>
+<!-- list user accounts --> 
+<div class="container-fluid">
+    <h2>User Accounts</h2>
     <table class="table">
         <thead>
             <th>Account Number</th>
@@ -195,28 +219,29 @@ if(isset($_POST['close']) && isset($_POST['close_aid']))
                                 <input type="hidden" name="apy" value="<?php se($account, 'apy'); ?>" />
                                 <input type="hidden" name="frozen" value="<?php se($account, 'frozen'); ?>" />
 
-                                <?php if ((int)se($account, 'frozen',"", false) == 1) : ?>
-                                    FROZEN
-                                <?php else : ?>
-                                    <input type="submit" value="More Info" />
-                                <?php endif; ?>
+                                <input type="submit" name="history" value="More Info" />
                             </form>
                         </td>
-                        <?php if((int)se($account, "balance", "", false) == 0) : ?>
+                        <?php if ((int)se($account, 'frozen',"", false) == 1) : ?>
+                            <td>FROZEN</td>
+                        <?php else : ?>
                             <td>
-                            <form method="POST" onsubmit="return confirm('Are you sure you want to close this account?');">
-                                <input type="hidden" name="close_aid" value="<?php se($account, 'id'); ?>" />
-                                <input type="submit" name="close" value="Close Account" />
+                            <form method="POST" onsubmit="return confirm('Are you sure you want to freeze this account?');">
+                                <input type="hidden" name="freeze_aid" value="<?php se($account, 'id'); ?>" />
+                                <input type="submit" name="freeze" value="Freeze Account" />
                             </form>
                             </td>
-                        <?php endif; ?>
+                        <?php endif ?>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
         </tbody>
     </table>
 </div>
+<?php endif; ?>
 
+<!-- account information and transaction history --> 
+<?php if (isset($_POST["history"])) : ?>
 <div class="container-fluid">
     <?php if (isset($_REQUEST["account_id"])) : ?>
         <h3>Account Information</h3>
@@ -244,6 +269,10 @@ if(isset($_POST['close']) && isset($_POST['close_aid']))
                 <?php endif; ?>
                 
                 <td><?php se($_POST, "created"); ?></td>
+
+                <?php if ((int)se($_POST, 'frozen',"", false) == 1) : ?>
+                    <td>FROZEN</td>
+                <?php endif ?>
             </tr>
         </table>
         <h4>Transaction History</h4>
@@ -252,11 +281,11 @@ if(isset($_POST['close']) && isset($_POST['close_aid']))
                 <input type = hidden name = account_id value = <?php se($_REQUEST, "account_id"); ?>>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="start-date">Start</span>
-                        <input name="start" type="date" class="form-control" placeholder="mm/dd/yyyy" aria-label="start date" aria-describedby="start-date" value="<?php se($startDate); ?>">
+                        <input name="start" type="date" class="form-control" placeholder="mm/dd/yyyy" aria-label="start date" aria-describedby="start-date">
                     <span class="input-group-text" id="end-date">End</span>
-                        <input name="end" type="date" class="form-control" placeholder="mm/dd/yyyy" aria-label="end date" aria-describedby="end-date" value="<?php se($endDate); ?>">
+                        <input name="end" type="date" class="form-control" placeholder="mm/dd/yyyy" aria-label="end date" aria-describedby="end-date">
                     <span class="input-group-text" id="filter">Transaction Type</span>
-                    <select class="form-control" name="type" value="<?php se($type); ?>">
+                    <select class="form-control" name="type">
                         <option value="deposit">Deposit</option>
                         <option value="withdraw">Withdraw</option>
                         <option value="transfer">Transfer</option>
@@ -297,10 +326,11 @@ if(isset($_POST['close']) && isset($_POST['close_aid']))
                 <?php endforeach; ?>
             <?php endif; ?>
         </table>
-        <?php include(__DIR__ . "/../../partials/pagination.php"); ?>
+        <?php include(__DIR__ . "/../../../partials/pagination.php"); ?>
     <?php endif; ?>
 </div>
+<?php endif; ?>
+
 <?php
-//note we need to go up 1 more directory
-require_once(__DIR__ . "/../../partials/flash.php");
+    require_once(__DIR__ . "/../../../partials/flash.php");
 ?>

@@ -14,10 +14,10 @@
             - Status: Pending (Completed, Partially working, Incomplete, Pending)
             - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
             - Pull Requests
-            - PR link #1 (repeat as necessary)
+                - PR link #1 (repeat as necessary)
             - Screenshots
-            - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-                - Screenshot #1 description explaining what you're trying to show
+                - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+                    - Screenshot #1 description explaining what you're trying to show
 ### End Line item / Feature Template
 --> 
 ### Proposal Checklist and Evidence
@@ -356,7 +356,7 @@
                 $query = "SELECT account_number, account_type, balance, created, id from Accounts ";
                 $params = null;
 
-                $query .= " WHERE user_id = :uid";
+                $query .= " WHERE user_id = :uid AND active = 1";
                 $params =  [":uid" => "$uid"];
 
                 $query .= " ORDER BY created desc LIMIT 5";`
@@ -593,9 +593,121 @@
                     - Each transaction is recorded as a transaction pair in the Transaction table
                     - These will reflect in the transaction history page
 
-
 - Milestone 4
-### Intructions
+    - [X] (12/12/2021) User can set their profile to be public or private (will need another column in Users table)
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/profile.php 
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/83
+            - Screenshots
+                - Screenshot #1 & #2
+                ![image](https://user-images.githubusercontent.com/83250817/146846539-6589f872-1997-42f2-b802-6487ed52f453.png)
+                
+                ![image](https://user-images.githubusercontent.com/83250817/146846567-ae0a8877-5aa5-4f15-b0ad-685350f1d66e.png)
+                    - user can set public/private
+
+    - [X] (12/18/2021) User will be able open a savings account
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/create_account.php 
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/84
+            - Screenshots
+                - Screenshot #1-3
+                ![image](https://user-images.githubusercontent.com/83250817/146847841-a70efcd8-2585-4593-9658-462abca896b3.png)
+                ![image](https://user-images.githubusercontent.com/83250817/146847913-ee417cd3-c4e4-4119-b4b3-8f2653208f51.png)
+                ![image](https://user-images.githubusercontent.com/83250817/146847981-4820a834-754d-41ec-ad5d-2b05b3bd003c.png)
+                  - create savings account, set apy, redirection to accounts page, see account info/transaction history
+
+    - [X] (12/19/2021) User will be able to take out a loan
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/loan.php
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/85
+            - Screenshots
+                - Screenshot #1
+                ![image](https://user-images.githubusercontent.com/83250817/146848724-3c86ded3-5762-410b-a4cd-fe0f91800ff7.png)
+                    - Form will have a dropdown of the user’s accounts of which to deposit the money into
+                    - require min $500
+                - Screenshot #2
+                ![image](https://user-images.githubusercontent.com/83250817/146848813-01e5535b-e091-4673-acc6-2c4816f77f01.png)
+
+                - Code so that [User can’t transfer more money from a loan once it’s been opened and a loan account should not appear in the Account Source dropdowns
+                ](https://github.com/shailis17/IT202-009/pull/85/commits/c3f359608987535599b839b1edfbeee49b3e348b)
+
+                - Screenshot #3 
+                ![image](https://user-images.githubusercontent.com/83250817/146849259-3a78a3d0-0f17-43b8-bd17-e94fff30b04b.png)
+                    - A loan with 0 balance will be considered paid off and will not accrue interest and will be eligible to be marked as closed
+
+    - [X] (12/18/2021) Listing accounts and/or viewing Account Details should show any applicable APY or “-” if none is set for the particular account (may alternatively just hide the display for these types)
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/my_accounts.php 
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/84
+            - Screenshots
+                - Screenshot #1-3
+                ![image](https://user-images.githubusercontent.com/83250817/146847981-4820a834-754d-41ec-ad5d-2b05b3bd003c.png)
+                ![image](https://user-images.githubusercontent.com/83250817/146848368-4a8c48a9-0b2f-4316-864c-50f3fdf58c12.png)
+                ![image](https://user-images.githubusercontent.com/83250817/146848394-4102721a-815c-4943-a873-f6058b9f1335.png)
+                    - shows apy where applicable, hides column where not needed (checkings account)
+
+    - [X] (12/19/2021) User will be able to close an account
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Link: https://sss8-prod.herokuapp.com/Project/my_accounts.php 
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/86
+            - Screenshots
+                - Screenshot #1-3
+                ![image](https://user-images.githubusercontent.com/83250817/146849613-5facf50f-5252-40b1-a52c-ceeb2ee4c953.png)
+                ![image](https://user-images.githubusercontent.com/83250817/146849776-add04468-f819-445e-9be8-7a518f347f55.png)
+                ![image](https://user-images.githubusercontent.com/83250817/146849974-315c983f-c014-4edd-8c6c-a8d38c07209f.png)
+                - checks for balance = 0 to be eligible to close account
+                - closing sets active = 0, closed accounts don't show up
+                - Code shows that [all queries for Accounts should be updated to pull only “active” = true accounts (i.e., dropdowns, My Accounts, etc)
+                ](https://github.com/shailis17/IT202-009/pull/86/commits/c5c44e687b822d536ec2ae16bf8b49c80ba1d785) 
+
+    - [X] (12/20/2021) Admin role (leave this section for last)
+        -  List of Evidence of Feature Completion
+            - Status: Completed
+            - Direct Link:
+                - Link #1: https://sss8-prod.herokuapp.com/Project/admin/manage_users.php
+                - Link #2: https://sss8-prod.herokuapp.com/Project/admin/view_accounts.php
+            - Pull Requests
+                - PR link #1: https://github.com/shailis17/IT202-009/pull/87
+            - Screenshots
+                - Screenshots #1-3
+                ![image](https://user-images.githubusercontent.com/83250817/146850140-6fd1ca25-b17e-4e08-8707-ef6340f8f30c.png)
+                ![image](https://user-images.githubusercontent.com/83250817/146850198-fd9adc7b-67af-4487-9a40-62fec7fb5e87.png)
+                ![image](https://user-images.githubusercontent.com/83250817/146850246-82b5c874-2d9a-4565-bd7b-146d553ddc7a.png)
+                   - Will be able to search for users by firstname and/or lastname
+                   - Will be able to look-up specific account numbers (partial match).
+
+                - Screenshot #4
+                ![image](https://user-images.githubusercontent.com/83250817/146850278-a05472a0-47b5-4eda-a1be-30c27080e048.png)
+                    - Will be able to see the transaction history of an account
+
+                - Screenshot #5
+                ![image](https://user-images.githubusercontent.com/83250817/146850317-d4a5aa55-0e2b-40af-9788-045a4c4ab11f.png)
+                   - Will be able to [freeze an account](https://github.com/shailis17/IT202-009/pull/87/commits/74a31e8c5db80eff0843be1476937f037685b16a) (this is similar to disable/delete but it’s a different column)
+                   - [Update transactions logic to not allow frozen accounts to be used for a transaction](https://github.com/shailis17/IT202-009/pull/87/commits/8da9d320077b35073104d009c6edea7d971c12af)
+
+                - Screenshot #6-8
+                ![image](https://user-images.githubusercontent.com/83250817/146961068-5b3398ac-cbbc-4d71-bd6a-b738b71223a0.png)
+                ![image](https://user-images.githubusercontent.com/83250817/146961186-16a1caac-878d-4890-8be1-e121ab8aaa17.png)
+                ![image](https://user-images.githubusercontent.com/83250817/146961240-94661929-8bb6-47b9-8ab3-ca35824990e1.png)
+                    - Will be able to open accounts for specific users
+
+                - Screenshot #9 
+                ![image](https://user-images.githubusercontent.com/83250817/146961579-4f5581f6-52d3-4bc1-904c-0e1d0780ce79.png)
+                    - Will be able to deactivate a user
+                    - [set Users active = 0 and prevent login](https://github.com/shailis17/IT202-009/pull/87/commits/5f61ccc6b724879016cb077d1a19afb6267ce954)
+
+
+### Instructions
 #### Don't delete this
 1. Pick one project type
 2. Create a proposal.md file in the root of your project directory of your GitHub repository

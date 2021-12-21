@@ -7,15 +7,15 @@
 
     if (!is_logged_in()) {
         flash("You don't have permission to view this page", "warning");
-        die(header("Location: " . get_url("home.php")));
+        redirect("home.php");
     }
 
     $uid = get_user_id();
-    $query = "SELECT account_number, account_type, balance, created, id from Accounts ";
+    $query = "SELECT account_number, account_type, balance, created, id, active from Accounts ";
     $params = null;
 
-    $query .= " WHERE user_id = :uid";
-    $params =  [":uid" => "$uid"];
+    $query .= " WHERE user_id = :uid AND active = 1 AND frozen = 0 AND NOT account_type = :loan";
+    $params =  [":uid" => "$uid", ":loan" => "loan"];
 
     $query .= " ORDER BY created desc";
     $db = getDB();
@@ -72,7 +72,7 @@
             refresh_account_balance($src);
             refresh_account_balance($dest);
             flash("Transfer was successful", "success");
-            die(header("Location: " . get_url("my_accounts.php")));
+            redirect("my_accounts.php");
         }
     }
     else
@@ -82,7 +82,7 @@
 
     function get_dest_id($lastname, $lastfour)
     {
-        $q = "SELECT Accounts.id, Accounts.account_number, Accounts.user_id, Users.lastname FROM Accounts INNER JOIN Users ON Accounts.user_id = Users.id WHERE Users.lastname LIKE :lastname AND Accounts.account_number LIKE :an ";
+        $q = "SELECT Accounts.id, Accounts.account_number, Accounts.user_id, Users.lastname FROM Accounts INNER JOIN Users ON Accounts.user_id = Users.id WHERE Accounts.active = 1 AND Users.lastname LIKE :lastname AND Accounts.account_number LIKE :an ";
         $p = ["lastname" => $lastname, "an" => "%$lastfour"];
 
         $db = getDB();

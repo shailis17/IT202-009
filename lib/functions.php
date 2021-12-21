@@ -63,7 +63,7 @@ function is_logged_in($redirect = false, $destination = "login.php")
     $isLoggedIn = isset($_SESSION["user"]);
     if ($redirect && !$isLoggedIn) {
         flash("You must be logged in to view this page", "warning");
-        die(header("Location: $destination"));
+        redirect($destination);
     }
     return $isLoggedIn; //se($_SESSION, "user", false, false);
 }
@@ -118,6 +118,14 @@ function get_user_id()
     if (is_logged_in()) 
     { //we need to check for login first because "user" key may not exist
         return se($_SESSION["user"], "id", false, false);
+    }
+    return false;
+}
+function get_user_visibilty() 
+{
+    if (is_logged_in()) 
+    { //we need to check for login first because "user" key may not exist
+        return se($_SESSION["user"], "visibility", false, false);
     }
     return false;
 }
@@ -183,6 +191,21 @@ function get_url($dest)
     return $BASE_PATH . $dest;
 }
 
+function redirect($path)
+{ //header headache
+    //https://www.php.net/manual/en/function.headers-sent.php#90160
+    /*headers are sent at the end of script execution otherwise they are sent when the buffer reaches it's limit and emptied */
+    if (!headers_sent()) {
+        //php redirect
+        die(header("Location: " . get_url($path)));
+    }
+    //javascript redirect
+    echo "<script>window.location.href='" . get_url($path) . "';</script>";
+    //metadata redirect (runs if javascript is disabled)
+    echo "<noscript><meta http-equiv=\"refresh\" content=\"0;url=" . get_url($path) . "\"/></noscript>";
+    die();
+}
+
 //transactions and account management helper functions
 function get_user_account_id()
 {
@@ -197,7 +220,7 @@ function get_account_balance($aid)
     $query = "SELECT balance, id from Accounts ";
     $params = null;
 
-    $query .= " WHERE id = :aid";
+    $query .= " WHERE id = :aid AND active = 1";
     $params =  [":aid" => "$aid"];
 
     $query .= " ORDER BY created desc";
@@ -223,12 +246,43 @@ function get_account_balance($aid)
     return $balance;
 }
 
+function get_account_type($aid)
+{
+    $query = "SELECT account_type, id from Accounts ";
+    $params = null;
+
+    $query .= " WHERE id = :aid AND active = 1";
+    $params =  [":aid" => "$aid"];
+
+    $query .= " ORDER BY created desc";
+    $db = getDB();
+
+    $stmt = $db->prepare($query);
+    $accounts = [];
+    try {
+        $stmt->execute($params);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($results) {
+            $accounts = $results;
+            //echo var_export($accounts, true); 
+        } else {
+            flash("No accounts found", "warning");
+        }
+    } catch (PDOException $e) {
+        flash(var_export($e->errorInfo, true), "danger");
+    }
+
+    $account = $accounts[0];
+    $type = se($account, "account_type","", false);
+    return $type;
+}
+
 function get_world_id($type = "world")
 {
     $query = "SELECT account_type, id from Accounts ";
     $params = null;
 
-    $query .= " WHERE account_type = :type";
+    $query .= " WHERE account_type = :type AND active = 1";
     $params =  [":type" => "$type"];
 
     $query .= " ORDER BY created desc";
@@ -350,5 +404,30 @@ function persistQueryString($page)
     return http_build_query($_GET);
 }
 
+//get APY rate from system properties table
+function getAPY($apy_type)
+{
+    $q = "SELECT apy_type, apy FROM SystemProperties WHERE apy_type = :apy_type";
+    $p = [":apy_type" => $apy_type];
 
+    $db = getDB();
+    $stmt = $db->prepare($q);
+    $results = [];
+    try {
+        $stmt->execute($p);
+        $r = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+        if ($r) {
+            $results = $r;
+            //echo var_export($results, true); 
+        } else {
+            flash("No accounts found", "warning");
+        }
+    } catch (PDOException $e) {
+        flash(var_export($e->errorInfo, true), "danger");
+    }
+
+    $apy = se($results[$apy_type], 'apy_type',"", false);
+    //se($apy);
+    return $apy;
+}
 ?>
