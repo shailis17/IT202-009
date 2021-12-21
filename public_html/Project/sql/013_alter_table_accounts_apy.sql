@@ -1,0 +1,2 @@
+ALTER TABLE Accounts 
+ADD COLUMN apy DECIMAL(4,2);

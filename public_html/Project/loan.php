@@ -1,5 +1,5 @@
 <?php
-//note we need to go up 1 more directory
+    
 require(__DIR__ . "/../../partials/nav.php");
 
 if (!is_logged_in()) {
@@ -7,15 +7,44 @@ if (!is_logged_in()) {
     redirect("home.php");
 }
 
-if (isset($_POST["a_type"]) && isset($_POST["deposit"])) 
+//get user accounts 
+$uid = get_user_id();
+$query = "SELECT account_number, account_type, balance, created, id from Accounts ";
+$params = null;
+
+$query .= " WHERE user_id = :uid AND active = 1 AND frozen = 0 AND NOT account_type = :loan";
+$params =  [":uid" => "$uid", ":loan" => "loan"];
+
+$query .= " ORDER BY created desc";
+$db = getDB();
+error_log("user_id: $uid");
+error_log("query: $query");
+$stmt = $db->prepare($query);
+$accounts = [];
+try {
+    $stmt->execute($params);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if ($results) {
+        $accounts = $results;
+        //echo var_export($accounts, true); 
+    } else {
+        flash("No accounts found", "warning");
+    }
+} catch (PDOException $e) {
+    flash(var_export($e->errorInfo, true), "danger");
+}
+
+//create the loan
+if (isset($_POST["dest_id"]) && isset($_POST["deposit"])) 
 {
-    $type = se($_POST, "a_type", "", false);
+    $type = "loan";
     $apy = getAPY($type);
     //flash("rate: $apy");
     $deposit = (int)se($_POST, "deposit", "", false);
-    if ($deposit < 5) 
+    $user_dest = (int)se($_POST, "dest_id", "", false);
+    if ($deposit < 500) 
     {
-        flash("Minimum deposit is $5", "warning");
+        flash("Minimum deposit is $500", "warning");
     } 
     else 
     {
@@ -52,8 +81,8 @@ if (isset($_POST["a_type"]) && isset($_POST["deposit"]))
         }
 
         $aid = $account_id + 1;
-        change_balance($deposit, "deposit", $aid, -1, $aid, "opening balance");
-        refresh_account_balance($aid);
+        change_balance($deposit, "deposit", $aid, $aid, $user_dest, "added loan");
+        refresh_account_balance($user_dest);
         redirect("my_accounts.php");
     }
 }
@@ -63,22 +92,28 @@ else
 ?>
 
 <div class="container-fluid">
-    <h2>Create Account</h2>
+    <h2>Take Out A Loan</h2>
     <form method="POST">
-        <div class="form-check">
-            <label for="sourceList" class="form-label">Choose an Account Type</label>
-            <select class="form-select" name="a_type" id="accountTypes" autocomplete="off">
-                <option value="checkings">Checkings</option>
-                <option value="savings">Savings</option>
+        <div class="mb-3">
+            <label for="destList" class="form-label">Choose an Account to Transfer Money To</label>
+            <select class="form-select" name="dest_id" id="destList" autocomplete="off">
+            <?php if (!empty($accounts)) : ?>
+                <?php foreach ($accounts as $account) : ?>
+                    <option value="<?php se($account, 'id'); ?>">
+                        <?php se($account, "account_number"); ?> (Type: <?php se($account, 'account_type'); ?>; Balance = $<?php se($account, "balance"); ?>)
+                    </option>
+                <?php endforeach; ?>
+            <?php endif; ?> 
             </select>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="d">Deposit (Min = $5) </label>
+            <label class="form-label" for="d">Deposit (Min = $500) </label>
             <input class="form-control" type="number" name="deposit" id="d"></input>
         </div>
-        <input type="submit" value="Create Account" />
+        <input type="submit" value="Get Loan" />
     </form>
 </div>
+
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
 ?>
